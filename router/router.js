@@ -14,10 +14,10 @@ function getFormatDate(date) {
 }
 
 var global = this;
-var body = "";
-var userData = "";
 
 module.exports = function (app) {
+  var body = "";
+  var userData = "";
   app.get("/", function (req, res) {
     res.render("login.html");
   });
@@ -28,12 +28,13 @@ module.exports = function (app) {
     });
     req.on("end", function () {
       global.userData = qs.parse(body);
+      console.log("userdata: ");
       console.log(global.userData);
 
       fs.readdir(dataFolder, function (error, filelist) {
-        console.log(filelist);
+        console.log("filelist: " + filelist);
+        // 처음 온 유저라면
         if (!fs.existsSync(`${dataFolder}/${global.userData.id}`)) {
-          // 처음 온 유저라면
           console.log("처음 방문합니다.");
           fs.mkdirSync(`${dataFolder}/${global.userData.id}`); // 유저 폴더 생성
           fs.writeFileSync(
@@ -41,21 +42,43 @@ module.exports = function (app) {
             `${dataFolder}/${global.userData.id}/${global.userData.id}-userData.json`,
             JSON.stringify(global.userData)
           );
-        } else {
+
+          console.log("오늘 처음 방문합니다.");
+          console.log("mkdir userid/date");
+          fs.mkdirSync(
+            `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
+          );
+          res.render("timer", {
+            userId: global.userData.id,
+            userName: global.userData.name,
+            userImage: global.userData.image,
+            date: getFormatDate(new Date()),
+            visited: false,
+          });
+        }
+        //온적 있다면
+        else {
           console.log("온적 있습니다.");
           fs.writeFileSync(
             // 유저 데이터 json파일 생성
             `${dataFolder}/${global.userData.id}/${global.userData.id}-userData.json`,
             JSON.stringify(global.userData)
           );
-
+          //오늘 처음 방문했다면
           if (
             !fs.existsSync(
               `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
             )
           ) {
-            //오늘 처음 방문했다면
-            console.log("오늘 처음 방문합니다.");
+            console.log("와봤는데 오늘 처음 방문합니다.");
+            console.log("global.userdata.id");
+            console.log(global.userData.id);
+
+            console.log("mkdir userid/date");
+            fs.mkdirSync(
+              `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
+            );
+
             res.render("timer", {
               userId: global.userData.id,
               userName: global.userData.name,
