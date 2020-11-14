@@ -128,7 +128,7 @@ module.exports = function (app) {
       fs.writeFileSync(`${timeFolder}/timeline.json`, timeline);
     } // finish 버튼을 눌렀을 때
     else if (queryData.state === "finish") {
-      var timeline = JSON.parse(
+      /*var timeline = JSON.parse(
         fs.readFileSync(`${timeFolder}/timeline.json`).toString()
       );
 
@@ -138,7 +138,7 @@ module.exports = function (app) {
       console.log("finish: " + timeline.finishTime);
 
       timeline = JSON.stringify(timeline);
-      fs.writeFileSync(`${timeFolder}/timeline.json`, timeline);
+      fs.writeFileSync(`${timeFolder}/timeline.json`, timeline);*/
 
       //delete the timeline.json
       fs.unlink(`${timeFolder}/timeline.json`, (err) => {

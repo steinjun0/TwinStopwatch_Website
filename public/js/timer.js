@@ -30,6 +30,22 @@ class MyClock {
       console.log("get all json data");
       console.log(data);
 
+      var loadDate = new Date();
+      loadDate.setTime(Number(data.startTime));
+
+      var start_months = loadDate.getMonth() + 1;
+      var start_date = loadDate.getDate();
+      var start_hour = loadDate.getHours();
+      var start_mins = loadDate.getMinutes();
+
+      let start_time = "t.m.d h:m"
+        .replace("t", loadDate.getFullYear())
+        .replace("m", start_months)
+        .replace("d", start_date)
+        .replace("h", start_hour)
+        .replace("m", start_mins);
+      document.getElementById("start_time").innerHTML = start_time;
+
       this.red_watch_start_time = Number(data.startTime);
       this.blue_watch_start_time = Number(data.startTime);
       console.log(data);
