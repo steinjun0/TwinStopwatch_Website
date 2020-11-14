@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="test.js"></script>
+  </head>
+
+  <header></header>
+  <section></section>
+
+  <script>
+    var header = document.querySelector("header");
+    var section = document.querySelector("section");
+
+    var requestURL =
+      "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json";
+
+    var request = new XMLHttpRequest();
+    request.open("GET", requestURL);
+
+    request.responseType = "json";
+    request.send();
+
+    request.onload = function () {
+      var superHeroes = request.response;
+      populateHeader(superHeroes);
+      showHeroes(superHeroes);
+    };
+
+    function populateHeader(jsonObj) {
+      var myH1 = document.createElement("h1");
+      myH1.textContent = jsonObj["squadName"];
+      header.appendChild(myH1);
+
+      var myPara = document.createElement("p");
+      myPara.textContent =
+        "Hometown: " + jsonObj["homeTown"] + " // Formed: " + jsonObj["formed"];
+      header.appendChild(myPara);
+    }
+
+    function showHeroes(jsonObj) {
+      var heroes = jsonObj["members"];
+
+      for (var i = 0; i < heroes.length; i++) {
+        var myArticle = document.createElement("article");
+        var myH2 = document.createElement("h2");
+        var myPara1 = document.createElement("p");
+        var myPara2 = document.createElement("p");
+        var myPara3 = document.createElement("p");
+        var myList = document.createElement("ul");
+
+        myH2.textContent = heroes[i].name;
+        myPara1.textContent = "Secret identity: " + heroes[i].secretIdentity;
+        myPara2.textContent = "Age: " + heroes[i].age;
+        myPara3.textContent = "Superpowers:";
+
+        var superPowers = heroes[i].powers;
+        for (var j = 0; j < superPowers.length; j++) {
+          var listItem = document.createElement("li");
+          listItem.textContent = superPowers[j];
+          myList.appendChild(listItem);
+        }
+
+        myArticle.appendChild(myH2);
+        myArticle.appendChild(myPara1);
+        myArticle.appendChild(myPara2);
+        myArticle.appendChild(myPara3);
+        myArticle.appendChild(myList);
+
+        section.appendChild(myArticle);
+      }
+    }
+
+    function produceJSON() {
+      // 리스트 생성
+      var testList = new Array();
+
+      for (var i = 1; i <= 2; i++) {
+        // 객체 생성
+        var data = new Object();
+
+        data.number = i;
+        data.name = "Tester #" + i;
+
+        // 리스트에 생성된 객체 삽입
+        testList.push(data);
+      }
+
+      // String 형태로 변환
+      var jsonData = JSON.stringify(testList);
+
+      alert(jsonData);
+
+      const fs = require("fs");
+      let obj = { a: 1, b: 2 };
+      obj = JSON.stringify(obj);
+      fs.writeFileSync("test.json", obj, "utf-8");
+
+      /*
+            출력결과 : [{"number":1,"name":"Tester #1"},{"number":2,"name":"Tester #2"}]
+        */
+    }
+    produceJSON();
+  </script>
+
+  <body></body>
+</html>

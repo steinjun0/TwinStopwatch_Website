@@ -1,0 +1,159 @@
+:root {
+  /* Color */
+  --white-color: #fff;
+  --black-color: #140a00;
+  --blue-color: #045fd4;
+  --red-color: #ff0000;
+  --grey-dark-color: #909090;
+  --grey-light-color: #e0e0e0;
+
+  /* Size */
+  --padding: 12px;
+  --avatar-size: 36px;
+
+  /* Font Size */
+  --font-huge: 5em;
+  --font-large: 2em;
+  --font-medium: 1.375em;
+  --font-small: 1em;
+  --font-micro: 0.625em;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.nav_bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: var(--padding);
+}
+
+.nav_bar {
+  font-size: var(--font-medium - 0.3em);
+}
+
+.main_contents_and_tab {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.main_content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50vh;
+  justify-content: space-between;
+  padding: 10vh 0;
+}
+
+.timer .study_time_display {
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-huge);
+  color: var(--red-color);
+}
+
+.timer .button_box {
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.timer .button_box .buttons {
+  margin-right: (50%-150px);
+  margin-left: (50%-150px);
+  display: flex;
+  justify-content: space-around;
+  font-size: var(--font-small);
+  color: black;
+}
+.buttons .start_button {
+  color: black;
+}
+.buttons .switch_button {
+  color: black;
+}
+.buttons .finish_button {
+  color: black;
+}
+
+.timer .rest_time_display {
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-huge);
+  color: var(--blue-color);
+}
+
+.timer .start_time_display {
+  display: flex;
+  justify-content: center;
+}
+
+.user_tab {
+  display: none;
+}
+
+
+.user_tab.active {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--grey-light-color);
+  width: 400px;
+  height: 100vh;
+  text-align: center;
+}
+
+.user_tab .profile_box {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user_tab .profile_box span {
+  text-align: center;
+  margin-top: 30px;
+  font-size: var(--font-large);
+}
+
+.user_tab .profile_img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+
+  text-align: center;
+}
+
+.user_tab .menu {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.user_tab .menu li {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+}
+
+.user_tab .menu li a {
+  font-size: var(--font-medium);
+  margin-top: 1em;
+  color: var(--dark-color);
+}

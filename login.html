@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css" />
+    <script src="js/login.js" defer></script>
+    <script>
+      function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
+        location.href = `timer`;
+      }
+    </script>
+
+    <meta
+      name="google-signin-client_id"
+      content="903349332883-995chld01uuon0eips74usst1222bmcp.apps.googleusercontent.com"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <span class="title">Twin Stopwatch</span>
+      <div class="explain_box">
+        <span class="explain">공부 시간과 휴식 시간을 측정해보세요.</span>
+      </div>
+
+      <div class="login_box">
+        <div id="my-signin2" data-onsuccess="onSignIn"></div>
+        <script>
+          function onSuccess(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log("Name: " + profile.getName());
+            console.log("Image URL: " + profile.getImageUrl());
+            console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
+            //location.href = `timer`;
+
+            document.write(
+              `<form action="timer" id = "smb_form" method="post">
+                <input type="hidden" name="name" value=${profile.getName()}>
+                <input type="hidden" name="id" value=${profile.getId()}>
+                <input type="hidden" name="image" value=${profile.getImageUrl()}>
+              </form>`
+            );
+            document.getElementById("smb_form").submit();
+          }
+          function onFailure(error) {
+            location.href = "timer";
+            console.log(error);
+          }
+          function renderButton() {
+            gapi.signin2.render("my-signin2", {
+              scope: "profile email",
+              width: 240,
+              height: 50,
+              longtitle: true,
+              theme: "dark",
+              onsuccess: onSuccess,
+              onfailure: onFailure,
+            });
+          }
+        </script>
+        <script
+          src="https://apis.google.com/js/platform.js?onload=renderButton"
+          async
+          defer
+        ></script>
+      </div>
+
+      <!--
+      <div class="button_box">
+        <a href="timer.html" class="start_button"
+          ><span class="text">시작하기</span></a
+        >
+      </div>
+      -->
+    </div>
+  </body>
+</html>
