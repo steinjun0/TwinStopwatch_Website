@@ -27,7 +27,7 @@ class MyClock {
     });
     // 콜백을 통해 data(json)를 가져옴
     promise.then((data) => {
-      console.log("here2");
+      console.log("get all json data");
       console.log(data);
 
       this.red_watch_start_time = Number(data.startTime);

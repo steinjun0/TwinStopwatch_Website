@@ -16,13 +16,13 @@ function getFormatDate(date) {
 var global = this;
 
 module.exports = function (app) {
-  var body = "";
-  var userData = "";
   app.get("/", function (req, res) {
     res.render("login.html");
   });
 
   app.post("/timer", function (req, res) {
+    var body = "";
+    var userData = "";
     req.on("data", function (data) {
       body = body + data;
     });
