@@ -13,7 +13,7 @@ class MyClock {
     // json 파일 다운로드 시작(비동기때문에 promise 사용)
     const promise = new Promise((resolve, reject) => {
       console.log("in the timer.js" + userId + date);
-      var file = `${userId}/${date}/timeline.json`;
+      var file = `${userId}/timeline.json`;
       var rawFile = new XMLHttpRequest();
       rawFile.overrideMimeType("application/json");
       rawFile.open("GET", file, true);

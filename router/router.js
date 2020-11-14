@@ -43,11 +43,6 @@ module.exports = function (app) {
             JSON.stringify(global.userData)
           );
 
-          console.log("오늘 처음 방문합니다.");
-          console.log("mkdir userid/date");
-          fs.mkdirSync(
-            `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
-          );
           res.render("timer", {
             userId: global.userData.id,
             userName: global.userData.name,
@@ -66,18 +61,11 @@ module.exports = function (app) {
           );
           //오늘 처음 방문했다면
           if (
-            !fs.existsSync(
-              `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
-            )
+            !fs.existsSync(`${dataFolder}/${global.userData.id}/timeline.json`)
           ) {
             console.log("와봤는데 오늘 처음 방문합니다.");
             console.log("global.userdata.id");
             console.log(global.userData.id);
-
-            console.log("mkdir userid/date");
-            fs.mkdirSync(
-              `${dataFolder}/${global.userData.id}/${getFormatDate(new Date())}`
-            );
 
             res.render("timer", {
               userId: global.userData.id,
@@ -110,7 +98,7 @@ module.exports = function (app) {
     //userData = fs.readFileSync(userData.json);
     //userData = JSON.parse(userData);
 
-    var timeFolder = `${dataFolder}/${queryData.id}/${date}`;
+    var timeFolder = `${dataFolder}/${queryData.id}`;
 
     console.log(queryData.id);
     console.log(getFormatDate(now));
@@ -118,9 +106,6 @@ module.exports = function (app) {
     console.log(!fs.existsSync(timeFolder));
     // start 버튼을 눌렀을 때
     if (queryData.state === "start") {
-      if (!fs.existsSync(timeFolder)) {
-        fs.mkdirSync(timeFolder);
-      }
       var startData = {
         startTime: `${now.getTime()}`,
         switch: [`${now.getTime()}`],
@@ -154,7 +139,16 @@ module.exports = function (app) {
 
       timeline = JSON.stringify(timeline);
       fs.writeFileSync(`${timeFolder}/timeline.json`, timeline);
+
+      //delete the timeline.json
+      fs.unlink(`${timeFolder}/timeline.json`, (err) => {
+        if (err) {
+          console.log("failed to delete local image:" + err);
+        } else {
+          console.log("successfully deleted local image");
+        }
+      });
     }
-    res.status(204).send();
+    res.status(204).send(); // to prevent to refresh of the page
   });
 };

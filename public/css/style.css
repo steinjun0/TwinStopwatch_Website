@@ -109,7 +109,6 @@ body {
   display: none;
 }
 
-
 .user_tab.active {
   display: flex;
   flex-direction: column;
@@ -156,4 +155,129 @@ body {
   font-size: var(--font-medium);
   margin-top: 1em;
   color: var(--dark-color);
+}
+
+@media screen and (max-width: 768px) {
+  /*화면이 768px 보다 작을 때*/
+  .nav_bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--padding);
+  }
+
+  .nav_bar {
+    font-size: var(--font-medium - 0.3em);
+  }
+
+  .main_contents_and_tab {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .main_content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .timer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50vh;
+    justify-content: space-between;
+    padding: 10vh 0;
+  }
+
+  .timer .study_time_display {
+    display: flex;
+    justify-content: center;
+    font-size: var(--font-huge);
+    color: var(--red-color);
+  }
+
+  .timer .button_box {
+    margin-right: 10%;
+    margin-left: 10%;
+  }
+
+  .timer .button_box .buttons {
+    margin-right: (50%-150px);
+    margin-left: (50%-150px);
+    display: flex;
+    justify-content: space-around;
+    font-size: var(--font-small);
+    color: black;
+  }
+  .buttons .start_button {
+    color: black;
+  }
+  .buttons .switch_button {
+    color: black;
+  }
+  .buttons .finish_button {
+    color: black;
+  }
+
+  .timer .rest_time_display {
+    display: flex;
+    justify-content: center;
+    font-size: var(--font-huge);
+    color: var(--blue-color);
+  }
+
+  .timer .start_time_display {
+    display: flex;
+    justify-content: center;
+  }
+
+  .user_tab {
+    display: none;
+  }
+
+  .user_tab.active {
+    display: none;
+  }
+  /*
+  .user_tab .profile_box {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .user_tab .profile_box span {
+    text-align: center;
+    margin-top: 30px;
+    font-size: var(--font-large);
+  }
+
+  .user_tab .profile_img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+
+    text-align: center;
+  }
+
+  .user_tab .menu {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .user_tab .menu li {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+  }
+
+  .user_tab .menu li a {
+    font-size: var(--font-medium);
+    margin-top: 1em;
+    color: var(--dark-color);
+  }*/
 }
