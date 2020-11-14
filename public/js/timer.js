@@ -187,7 +187,7 @@ const switch_button = document.querySelector(".switch_button");
 const finish_button = document.querySelector(".finish_button");
 
 start_button.addEventListener("click", () => {
-  myClock.startWatch("1605257729967");
+  myClock.startWatch();
 });
 
 switch_button.addEventListener("click", () => {
