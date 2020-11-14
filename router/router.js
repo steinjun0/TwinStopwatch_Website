@@ -105,7 +105,8 @@ module.exports = function (app) {
     console.log(timeFolder);
     console.log(!fs.existsSync(timeFolder));
     // start 버튼을 눌렀을 때
-    if (queryData.state === "start") {
+    if (queryData.state === "start"&&
+      !fs.existsSync(`${timeFolder}/timeline.json`)) {
       var startData = {
         startTime: `${now.getTime()}`,
         switch: [`${now.getTime()}`],
@@ -114,7 +115,10 @@ module.exports = function (app) {
       startData = JSON.stringify(startData);
       fs.writeFileSync(`${timeFolder}/timeline.json`, startData);
     } // switch 버튼을 눌렀을 때
-    else if (queryData.state === "switch") {
+    else if (
+      queryData.state === "switch" &&
+      fs.existsSync(`${timeFolder}/timeline.json`)
+    ) {
       var timeline = JSON.parse(
         fs.readFileSync(`${timeFolder}/timeline.json`).toString()
       );
@@ -127,7 +131,10 @@ module.exports = function (app) {
       timeline = JSON.stringify(timeline);
       fs.writeFileSync(`${timeFolder}/timeline.json`, timeline);
     } // finish 버튼을 눌렀을 때
-    else if (queryData.state === "finish") {
+    else if (
+      queryData.state === "finish" &&
+      fs.existsSync(`${timeFolder}//timeline.json`)
+    ) {
       /*var timeline = JSON.parse(
         fs.readFileSync(`${timeFolder}/timeline.json`).toString()
       );
