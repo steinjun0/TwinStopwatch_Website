@@ -42,12 +42,16 @@ body {
   display: none;
 }
 
+/* main_contents_and_tab */
+
 .main_contents_and_tab {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
+
+/* main_content */
 
 .main_content {
   display: flex;
@@ -106,6 +110,15 @@ body {
   justify-content: center;
 }
 
+/* chart */
+.chart_box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* user_tab */
+
 .user_tab {
   display: none;
 }
@@ -158,8 +171,9 @@ body {
   color: var(--dark-color);
 }
 
+/*화면이 768px 보다 작을 때*/
+
 @media screen and (max-width: 768px) {
-  /*화면이 768px 보다 작을 때*/
   .nav_bar {
     display: flex;
     flex-direction: row;
@@ -176,12 +190,16 @@ body {
     display: flex;
   }
 
+  /* main_content_and_tab */
+
   .main_contents_and_tab {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
+
+  /* main_content */
 
   .main_content {
     display: flex;
@@ -240,6 +258,7 @@ body {
     justify-content: center;
   }
 
+  /* user_tab */
   .user_tab {
     display: none;
   }

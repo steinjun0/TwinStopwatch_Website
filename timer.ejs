@@ -92,9 +92,10 @@
       </div>
     </header>
     <!-- main content-->
-    <!-- timer -->
+    
     <div class="main_contents_and_tab">
       <div class="main_content">
+        <!-- timer -->
         <section id="timer">
           <div class="timer">
             <div class="study_time_display">
@@ -120,10 +121,34 @@
             </div>
           </div>
         </section>
-
-        <canvas id="chart"></canvas>
-        <script src="js/chart.js"></script>
+        <!-- chart -->
+        <div class="chart_box">
+          <div class= "wrap_chart">
+            <canvas id="chart"></canvas>
+          </div>
+          <div id="app">
+            <div class="chart_edit_box">
+              <div>
+                <h5>시작시간: xx:xx:xx</h5>
+                <h5>종료시간: yy:yy:yy</h5>
+                <h5>소요시간: zz:zz:zz</h5>
+                <p>v-if와 v-show로 모달창을 띄워봅시다.</p>
+                <button @click="handle_toggle" type="button">
+                  확인
+                </button>
+                <button @click="handle_toggle" type="button">
+                  추가
+                </button>
+                <button @click="handle_toggle" type="button">
+                  삭제
+                </button>
+              </div>
+            </div>
+          </div>
+        
           
+        </div>
+        <script src="js/chart.js"></script>
       </div>
       <!-- tab -->
 
@@ -184,14 +209,14 @@
     </script>
   </body>
 
-
+<!-- 
   <div id="app">
-    <!-- #1 : Button trigger modal -->
+    
     <button @click="handle_toggle" type="button">
         모달창 띄우기
     </button>
 
-    <!-- #2 : Modal Window -->
+   
     <div v-show="is_show">
         <h5>뷰하!</h5>
         <p>v-if와 v-show로 모달창을 띄워봅시다.</p>
@@ -215,5 +240,6 @@
         },
       },
     });
-  </script>
+  </script> -->
 </html>
+
