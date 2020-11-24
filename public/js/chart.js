@@ -96,4 +96,9 @@ function showChart(timeline, animationFlag, myPie) {
   return myPie;
 }
 
-function editStartTime() {}
+function editStartTime(timelineJson, n) {
+  const promise = getTimeline(timelineJson);
+  promise.then((timeline) => {
+    timeline.switch[n]
+  });
+}

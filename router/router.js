@@ -407,64 +407,6 @@ module.exports = function (app) {
       });
     });
   });
-  /*
-  app.post("/getTimelineJson", function (req, res) {
-    var body = "";
-    var userData = "";
-    req.on("data", function (data) {
-      body = body + data;
-    });
-    req.on("end", function () {
-      global.userData = qs.parse(body);
-      console.info("userdata.id: ");
-      console.info(global.userData.id);
-    });
-    res.send({
-      timeline: 
-    })
-  });*/
-
-  // app.post("/timer", function (req, res) {
-
-  //   now = new Date();
-  //   var date = getFormatDate(now);
-  //   var _url = req.url;
-  //   var queryData = url.parse(_url, true).query;
-  //   //userData = fs.readFileSync(userData.json);
-  //   //userData = JSON.parse(userData);
-
-  //   var userFolder = `${dataFolder}/${queryData.id}`;
-  //   userId = queryData.id;
-  //   console.log(`when page /timer open at first, get userId as: ${userId}`);
-
-  //   console.log(queryData.id);
-  //   console.log(getFormatDate(now));
-  //   console.log(userFolder);
-  //   console.log(!fs.existsSync(userFolder));
-
-  //   routingButton(userFolder, queryData, res);
-  //   res.status(204).send(); // to prevent to refresh of the page
-  // });
-
-  // app.get("/timer", function (req, res) {
-  //   now = new Date();
-  //   var date = getFormatDate(now);
-  //   var _url = req.url;
-  //   var queryData = url.parse(_url, true).query;
-  //   //userData = fs.readFileSync(userData.json);
-  //   //userData = JSON.parse(userData);
-
-  //   var userFolder = `${dataFolder}/${queryData.id}`;
-  //   userId = queryData.id;
-
-  //   console.log(queryData.id);
-  //   console.log(getFormatDate(now));
-  //   console.log(userFolder);
-  //   console.log(!fs.existsSync(userFolder));
-
-  //   routingButton(userFolder, queryData, res);
-  //   res.status(204).send(); // to prevent to refresh of the page
-  // });
 
   app.post("/button", function (req, res) {
     //console.log(req);
@@ -477,6 +419,14 @@ module.exports = function (app) {
     req.on("end", function () {
       routingButton(`data/${userId}`, state, res);
     });
+  });
+  app.post("/edit", function (req, res) {
+    console.log(`route /edit, userId: ${userId}`);
+    var state = "";
+    req.on("data", function (data) {
+      state = state + data;
+    });
+    req.on("end", function () {});
   });
 };
 
@@ -532,106 +482,24 @@ function checkContinuetest(dataFolder, userData, outerResolve) {
   });
 }
 
-// function routingButtonOld(dataFolder, queryData, res) {
-//   /*
-//   var finishPromise = new Promise((resolve, reject)=>{
-//     isFinished(`${timeFolder/..}`, {queryData.id}, outerResolve);
-//   })
+function editStartTime(n, editTime) {
+  new Promise((checkContinueResolve, reject) => {
+    // 진행중이던 타이머가 있는지 확인해본다
+    checkContinue(`${userFolder}`, checkContinueResolve);
+  }).then((continuousAndJson) => {
+    if (continuousAndJson.continuous) {
+      var timeline = JSON.parse(
+        fs.readFileSync(`${continuousAndJson.json}`).toString()
+      );
+      timeline.switch[n] = editTime;
+      console.log(
+        `{editStartTime} [${userId}] timeline: ${JSON.stringify(timeline)}`
+      );
+      console.log(`{editStartTime} [${userId}] switch: ${timeline.switch}`);
 
-//   finishPromise.then((value)=>{
-//     if()
-//   })*/
-
-//   // start 버튼을 눌렀을 때
-//   // isFinish가 False라면 생성 안됨
-//   // isFinish가 True라면 다음 번호의 timeline$.json을 생성
-
-//   // 가장 최근 timeline 파일을 찾는다
-//   // 파일이 없다-> 생성
-//   // 파일을 찾았는데 끝났다 -> 생성
-//   // 파일을 찾았는데 아직 진행중이다 -> 아무것도 하지 않음
-
-//   if (queryData.state === "start") {
-//     console.log(`{routingButton} ${queryData.id} press the start button`);
-//     new Promise((checkContinueResolve, reject) => {
-//       // 진행중이던 타이머가 있는지 확인해본다
-//       checkContinue(`${dataFolder}`, queryData, checkContinueResolve);
-//     }).then((continuousAndJson) => {
-//       if (!continuousAndJson.continuous) {
-//         // 진행중이던 타이머가 없다면 새로 만든다
-//         console.info(
-//           `{routingButton} [${queryData.id}]: has no continuous timeline`
-//         );
-
-//         var startData = {
-//           startTime: `${now.getTime()}`,
-//           switch: [`${now.getTime()}`],
-//           finishTime: "",
-//         };
-//         startData = JSON.stringify(startData);
-//         fs.writeFileSync(`${getNextJsonName(dataFolder)}`, startData);
-//         console.info(
-//           `{routingButton} [${
-//             queryData.id
-//           }]: start the timer\nmake ${getNextJsonName(dataFolder)}`
-//         );
-//       }
-//     });
-//   }
-
-//   if (
-//     queryData.state === "start" &&
-//     !fs.existsSync(`${dataFolder}/timeline.json`)
-//   ) {
-//     console.info(`{routingButton} ${queryData.id}: start the timer`);
-//     var startData = {
-//       startTime: `${now.getTime()}`,
-//       switch: [`${now.getTime()}`],
-//       finishTime: "",
-//     };
-//     startData = JSON.stringify(startData);
-//     fs.writeFileSync(`${dataFolder}/timeline.json`, startData);
-//   } // switch 버튼을 눌렀을 때
-//   else if (
-//     queryData.state === "switch" &&
-//     fs.existsSync(`${dataFolder}/timeline.json`)
-//   ) {
-//     var timeline = JSON.parse(
-//       fs.readFileSync(`${dataFolder}/timeline.json`).toString()
-//     );
-
-//     timeline.switch.push(`${now.getTime()}`);
-
-//     console.log("timeline: " + JSON.stringify(timeline));
-//     console.log("switch: " + timeline.switch);
-
-//     timeline = JSON.stringify(timeline);
-//     fs.writeFileSync(`${dataFolder}/timeline.json`, timeline);
-//   } // finish 버튼을 눌렀을 때
-//   else if (
-//     queryData.state === "finish" &&
-//     fs.existsSync(`${dataFolder}//timeline.json`)
-//   ) {
-//     var timeline = JSON.parse(
-//       fs.readFileSync(`${dataFolder}/timeline.json`).toString()
-//     );
-
-//     timeline.finishTime = `${now.getTime()}`;
-
-//     console.log("timeline: " + JSON.stringify(timeline));
-//     console.log("finish: " + timeline.finishTime);
-
-//     timeline = JSON.stringify(timeline);
-//     fs.writeFileSync(`${dataFolder}/timeline.json`, timeline);
-
-//     //delete the timeline.json
-//     console.info(`${queryData.id}: finish the timer`);
-//     fs.unlink(`${dataFolder}/timeline.json`, (err) => {
-//       if (err) {
-//         console.log("failed to delete local image:" + err);
-//       } else {
-//         console.log("successfully deleted local image");
-//       }
-//     });
-//   }
-// }
+      timeline = JSON.stringify(timeline);
+      fs.writeFileSync(`${continuousAndJson.json}`, timeline);
+    }
+  });
+  res.status(204).send();
+}

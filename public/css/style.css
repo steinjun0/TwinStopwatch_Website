@@ -114,7 +114,25 @@ body {
 .chart_box {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  padding: 5px;
+  height: calc(50vh - 2 * var(--padding) - var(--font-medium));
+  justify-content: center;
+}
+
+.chart_box > div {
+  text-align: center;
+  margin: 1px;
+  width: 50%;
+}
+.chart_box .wrap_chart {
+  width: 80%;
+}
+
+.chart_box .chart_edit_box {
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* user_tab */
@@ -128,7 +146,7 @@ body {
   flex-direction: column;
   background-color: var(--grey-light-color);
   width: 400px;
-  height: 100vh;
+  height: calc(100vh - 2 * var(--padding) - var(--font-medium));
   text-align: center;
 }
 
