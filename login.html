@@ -6,16 +6,6 @@
     <title>Login</title>
     <link rel="stylesheet" href="css/login.css" />
     <script src="js/login.js" defer></script>
-    <script>
-      function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log("Name: " + profile.getName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
-        location.href = `timer`;
-      }
-    </script>
 
     <meta
       name="google-signin-client_id"
@@ -51,7 +41,7 @@
             document.getElementById("smb_form").submit();
           }
           function onFailure(error) {
-            location.href = "timer";
+            //location.href = "timer";
             console.log(error);
           }
           function renderButton() {
