@@ -93,12 +93,37 @@ function showChart(timeline, animationFlag, myPie) {
 
   var ctx = document.getElementById("chart").getContext("2d");
   myPie = new Chart(ctx, config);
+
+  document.getElementById("chart").onclick = function (evt) {
+    var activePoints = myPie.getElementsAtEvent(evt);
+
+    if (activePoints.length > 0) {
+      //get the internal index of slice in pie chart
+      var clickedElementindex = activePoints[0]["_index"];
+
+      // //get specific label by index
+      // var label = chart.data.labels[clickedElementindex];
+
+      // //get value by index
+      // var value = chart.data.datasets[0].data[clickedElementindex];
+
+      editStartTime(clickedElementindex, "1606301470000");
+
+      /* other stuff that requires slice's label and value */
+    }
+  };
   return myPie;
 }
 
-function editStartTime(timelineJson, n) {
-  const promise = getTimeline(timelineJson);
-  promise.then((timeline) => {
-    timeline.switch[n]
-  });
+function editStartTime(n, editTime) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/edit", true);
+  var body = {
+    option: "editStartTime",
+    idx: n,
+    data: editTime,
+  };
+  body = JSON.stringify(body);
+  xhr.send(body);
+  alert(`${body.idx}, ${body.data}`);
 }

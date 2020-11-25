@@ -422,11 +422,57 @@ module.exports = function (app) {
   });
   app.post("/edit", function (req, res) {
     console.log(`route /edit, userId: ${userId}`);
-    var state = "";
+    var changes = "";
     req.on("data", function (data) {
-      state = state + data;
+      changes = changes + data;
     });
-    req.on("end", function () {});
+    req.on("end", function () {
+      changes = JSON.parse(changes);
+      new Promise((checkContinueResolve, reject) => {
+        // 진행중이던 타이머가 있는지 확인해본다
+        checkContinue(`data/${userId}`, checkContinueResolve);
+      }).then((continuousAndJson) => {
+        if (continuousAndJson.continuous) {
+          var timeline = JSON.parse(
+            fs.readFileSync(`${continuousAndJson.json}`).toString()
+          );
+          console.log(JSON.stringify(changes));
+          if (changes.option === "editStartTime") {
+            timeline.switch.splice(changes.idx, 1, changes.data);
+            console.log(
+              `{routingButton/edit} [${userId}] get in "editStartTiem"}`
+            );
+          } else if (changes.option === "addNewTime") {
+            timeline.switch.splice(
+              changes.idx,
+              2,
+              changes.data[0],
+              changes.data[1]
+            );
+            console.log(
+              `{routingButton/edit} [${userId}] get in "addNewTime"}`
+            );
+          } else if (changes.option === "deleteTime") {
+            timeline.switch.splice(changes.idx, 2);
+            console.log(
+              `{routingButton/edit} [${userId}] get in "deleteTime"}`
+            );
+          }
+          console.log(
+            `{routingButton/edit} [${userId}] timeline: ${JSON.stringify(
+              timeline
+            )}`
+          );
+          console.log(
+            `{routingButton/edit} [${userId}] switch: ${timeline.switch}`
+          );
+
+          timeline = JSON.stringify(timeline);
+          fs.writeFileSync(`${continuousAndJson.json}`, timeline);
+        }
+      });
+      res.status(204).send();
+    });
   });
 };
 
