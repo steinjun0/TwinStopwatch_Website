@@ -439,6 +439,9 @@ module.exports = function (app) {
           console.log(JSON.stringify(changes));
           if (changes.option === "editStartTime") {
             timeline.switch.splice(changes.idx, 1, changes.data);
+            if (changes.idx === 0) {
+              timeline.startTime = changes.data;
+            }
             console.log(
               `{routingButton/edit} [${userId}] get in "editStartTiem"}`
             );

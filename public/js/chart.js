@@ -125,5 +125,15 @@ function editStartTime(n, editTime) {
   };
   body = JSON.stringify(body);
   xhr.send(body);
-  alert(`${body.idx}, ${body.data}`);
+  alert(`${body}`);
+  console.log(body);
+  console.log(xhr.readyState);
+  console.log(xhr.status);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      clearInterval(myClock.timer);
+      clearInterval(myClock.chartTimer);
+      myClock.load(myClock.userId, myClock.timelineJson);
+    }
+  };
 }

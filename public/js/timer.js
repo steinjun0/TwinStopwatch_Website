@@ -24,6 +24,7 @@ class MyClock {
     this.red_watch_start_time = "";
     this.userId;
     this.chartTimer;
+    this.timelineJson;
     window.myPie;
   }
 
@@ -32,6 +33,7 @@ class MyClock {
     // 최근 스위치 시간-> study / rest 판단
     //
     // json 파일 다운로드 시작(비동기때문에 promise 사용)
+    this.timelineJson = timelineJson;
     this.userId = userId;
     const promise = getTimeline(timelineJson);
 
@@ -232,10 +234,10 @@ start_button.addEventListener("click", () => {
       var chartTimerPromise = getTimeline("./" + xhr.responseText);
       console.log(`start first promise`);
 
-      var timelineJson = "./" + xhr.responseText;
+      myClock.timelineJson = "./" + xhr.responseText;
       var animationFlag = 1;
       myClock.chartTimer = setInterval(() => {
-        var chartTimerPromise = getTimeline(timelineJson);
+        var chartTimerPromise = getTimeline(myClock.timelineJson);
         chartTimerPromise.then((timeline) => {
           myPie = showChart(timeline, animationFlag, window.myPie);
           if (animationFlag > 0) {
