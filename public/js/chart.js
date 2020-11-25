@@ -1,3 +1,8 @@
+const chart_start_time = document.querySelector(".chart_start_time");
+const chart_finish_time = document.querySelector(".chart_finish_time");
+const chart_duration_time = document.querySelector(".chart_duration_time");
+const chart_edit_box = document.querySelector(".chart_edit_box");
+
 var randomScalingFactor = function () {
   return Math.round(Math.random() * 100);
 };
@@ -107,9 +112,11 @@ function showChart(timeline, animationFlag, myPie) {
       // //get value by index
       // var value = chart.data.datasets[0].data[clickedElementindex];
 
-      editStartTime(clickedElementindex, "1606301470000");
+      //editStartTime(clickedElementindex, "1606301470000");
 
       /* other stuff that requires slice's label and value */
+      console.log("toggled!");
+      chart_edit_box.classList.toggle("active");
     }
   };
   return myPie;

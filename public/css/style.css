@@ -135,16 +135,38 @@ body {
   display: flex;
 }
 
-.chart_box .wrap_chart .active {
+.chart_box .wrap_chart.active {
   width: 100%;
   display: flex;
 }
 
 .chart_box .chart_edit_box {
-  display: flex;
+  float: left;
+  width: 0%;
+
+  transition: 0.5s;
+  overflow-x: hidden;
+}
+
+.chart_box .chart_edit_box.active {
+  float: left;
   width: 30%;
-  flex-direction: column;
-  justify-content: center;
+  
+  transition: 0.5s;
+}
+
+.chart_box .chart_edit_box > div {
+  white-space: nowrap;
+  
+}
+.chart_box .chart_edit_box .duration_time_box span {
+  float: left;
+}
+
+.chart_box .chart_edit_box > button {
+  white-space: nowrap;
+  min-width: 100%;
+  
 }
 
 /* user_tab */
