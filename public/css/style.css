@@ -116,21 +116,33 @@ body {
   flex-direction: row;
   padding: 5px;
   height: calc(50vh - 2 * var(--padding) - var(--font-medium));
+
   justify-content: center;
 }
 
 .chart_box > div {
   text-align: center;
   margin: 1px;
-  width: 50%;
 }
+
+.chart_box_elem {
+  width: 70%;
+  max-width: 45vw;
+}
+
 .chart_box .wrap_chart {
-  width: 80%;
+  width: 100%;
+  display: flex;
+}
+
+.chart_box .wrap_chart .active {
+  width: 100%;
+  display: flex;
 }
 
 .chart_box .chart_edit_box {
   display: flex;
-  width: 20%;
+  width: 30%;
   flex-direction: column;
   justify-content: center;
 }
