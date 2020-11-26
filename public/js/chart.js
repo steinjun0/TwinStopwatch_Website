@@ -8,13 +8,13 @@ var randomScalingFactor = function () {
 };
 
 function getSwitchGapArray(timeline) {
-  var switchArray = timeline.switch;
-  console.log(`3: ${timeline.switch}`);
+  var switchArray = timeline.switchTime;
+  console.log(`3: ${timeline.switchTime}`);
   var switchGapArray = [];
   var now = new Date().getTime();
   switchArray.push(now);
   console.log(`6: ${switchArray}`);
-  switchArray = switchArray.map((x) => x - timeline.switch[0]);
+  switchArray = switchArray.map((x) => x - timeline.switchTime[0]);
   console.log(`7: ${switchArray}`);
   for (var i = 0; i < switchArray.length - 1; i++) {
     switchGapArray.push(switchArray[i + 1] - switchArray[i]);
@@ -90,7 +90,7 @@ function showChart(timeline, animationFlag, myPie) {
   try {
     myPie.data.datasets[0].data[myPie.data.datasets[0].data.length - 1] =
       switchGapArray[switchGapArray.length - 1];
-    console.log(`5: ${timeline.switch}`);
+    console.log(`5: ${timeline.switchTime}`);
     myPie.destroy();
   } catch (error) {
     console.log(`{showChart}: there is no pie chart yet`);
@@ -113,10 +113,11 @@ function showChart(timeline, animationFlag, myPie) {
       // var value = chart.data.datasets[0].data[clickedElementindex];
 
       //editStartTime(clickedElementindex, "1606301470000");
+      showChartEditText(clickedElementindex);
 
       /* other stuff that requires slice's label and value */
-      console.log("toggled!");
-      chart_edit_box.classList.toggle("active");
+      //console.log("toggled!");
+      //chart_edit_box.classList.toggle("active");
     }
   };
   return myPie;
@@ -141,6 +142,49 @@ function editStartTime(n, editTime) {
       clearInterval(myClock.timer);
       clearInterval(myClock.chartTimer);
       myClock.load(myClock.userId, myClock.timelineJson);
+      chart_edit_box.classList.toggle("active");
+    }
+  };
+}
+
+function convertOneDigitToTwoDigits(number) {
+  if (number < 10) {
+    return "0" + number;
+  }
+  return number;
+}
+
+function showChartEditText(n) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/edit", true);
+  var body = {
+    option: "showChartEditText",
+    idx: n,
+  };
+  body = JSON.stringify(body);
+  xhr.send(body);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      var timeData = JSON.parse(xhr.responseText);
+      var startTime = new Date();
+      startTime.setTime(timeData.startTime);
+      var finishTime = new Date();
+      finishTime.setTime(timeData.finishTime);
+      chart_start_time.innerHTML = `시작 시간: ${convertOneDigitToTwoDigits(
+        startTime.getDate()
+      )}일 ${convertOneDigitToTwoDigits(
+        startTime.getHours()
+      )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
+      chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
+        finishTime.getDate()
+      )}일 ${convertOneDigitToTwoDigits(
+        finishTime.getHours()
+      )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
+      chart_duration_time.innerHTML = `소요 시간: ${
+        Number(timeData.finishTime) - Number(timeData.startTime)
+      }`;
+      chart_edit_box.classList.toggle("active");
     }
   };
 }

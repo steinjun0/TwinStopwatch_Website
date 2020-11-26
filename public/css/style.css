@@ -151,13 +151,13 @@ body {
 .chart_box .chart_edit_box.active {
   float: left;
   width: 30%;
-  
+
   transition: 0.5s;
 }
 
 .chart_box .chart_edit_box > div {
+  float: left;
   white-space: nowrap;
-  
 }
 .chart_box .chart_edit_box .duration_time_box span {
   float: left;
@@ -166,7 +166,6 @@ body {
 .chart_box .chart_edit_box > button {
   white-space: nowrap;
   min-width: 100%;
-  
 }
 
 /* user_tab */

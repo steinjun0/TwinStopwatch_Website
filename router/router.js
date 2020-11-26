@@ -122,7 +122,7 @@ function routingButton(userFolder, state, res) {
 
           var startData = {
             startTime: `${now.getTime()}`,
-            switch: [`${now.getTime()}`],
+            switchTime: [`${now.getTime()}`],
             finishTime: "",
           };
           startData = JSON.stringify(startData);
@@ -144,7 +144,7 @@ function routingButton(userFolder, state, res) {
           console.info(`{routingButton} [${userId}]: has no timeline`);
           var startData = {
             startTime: `${now.getTime()}`,
-            switch: [`${now.getTime()}`],
+            switchTime: [`${now.getTime()}`],
             finishTime: "",
           };
           startData = JSON.stringify(startData);
@@ -165,12 +165,14 @@ function routingButton(userFolder, state, res) {
         var timeline = JSON.parse(
           fs.readFileSync(`${continuousAndJson.json}`).toString()
         );
-        timeline.switch.push(`${now.getTime()}`);
+        timeline.switchTime.push(`${now.getTime()}`);
 
         console.log(
           `{routingButton} [${userId}] timeline: ${JSON.stringify(timeline)}`
         );
-        console.log(`{routingButton} [${userId}] switch: ${timeline.switch}`);
+        console.log(
+          `{routingButton} [${userId}] switchTime: ${timeline.switchTime}`
+        );
 
         timeline = JSON.stringify(timeline);
         fs.writeFileSync(`${continuousAndJson.json}`, timeline);
@@ -437,16 +439,24 @@ module.exports = function (app) {
             fs.readFileSync(`${continuousAndJson.json}`).toString()
           );
           console.log(JSON.stringify(changes));
-          if (changes.option === "editStartTime") {
-            timeline.switch.splice(changes.idx, 1, changes.data);
+          if (changes.option === "showChartEditText") {
+            var timeData = {
+              startTime: timeline.switchTime[Number(changes.idx)],
+              finishTime: timeline.switchTime[Number(changes.idx + 1)],
+            };
+            timeData = JSON.stringify(timeData);
+            res.send(timeData);
+          } else if (changes.option === "editStartTime") {
+            timeline.switchTime.splice(changes.idx, 1, changes.data);
             if (changes.idx === 0) {
               timeline.startTime = changes.data;
             }
             console.log(
               `{routingButton/edit} [${userId}] get in "editStartTiem"}`
             );
+            res.status(204).send();
           } else if (changes.option === "addNewTime") {
-            timeline.switch.splice(
+            timeline.switchTime.splice(
               changes.idx,
               2,
               changes.data[0],
@@ -455,11 +465,13 @@ module.exports = function (app) {
             console.log(
               `{routingButton/edit} [${userId}] get in "addNewTime"}`
             );
+            res.status(204).send();
           } else if (changes.option === "deleteTime") {
-            timeline.switch.splice(changes.idx, 2);
+            timeline.switchTime.splice(changes.idx, 2);
             console.log(
               `{routingButton/edit} [${userId}] get in "deleteTime"}`
             );
+            res.status(204).send();
           }
           console.log(
             `{routingButton/edit} [${userId}] timeline: ${JSON.stringify(
@@ -467,14 +479,13 @@ module.exports = function (app) {
             )}`
           );
           console.log(
-            `{routingButton/edit} [${userId}] switch: ${timeline.switch}`
+            `{routingButton/edit} [${userId}] switchTime: ${timeline.switchTime}`
           );
 
           timeline = JSON.stringify(timeline);
           fs.writeFileSync(`${continuousAndJson.json}`, timeline);
         }
       });
-      res.status(204).send();
     });
   });
 };
@@ -540,11 +551,13 @@ function editStartTime(n, editTime) {
       var timeline = JSON.parse(
         fs.readFileSync(`${continuousAndJson.json}`).toString()
       );
-      timeline.switch[n] = editTime;
+      timeline.switchTime[n] = editTime;
       console.log(
         `{editStartTime} [${userId}] timeline: ${JSON.stringify(timeline)}`
       );
-      console.log(`{editStartTime} [${userId}] switch: ${timeline.switch}`);
+      console.log(
+        `{editStartTime} [${userId}] switchTime: ${timeline.switchTime}`
+      );
 
       timeline = JSON.stringify(timeline);
       fs.writeFileSync(`${continuousAndJson.json}`, timeline);

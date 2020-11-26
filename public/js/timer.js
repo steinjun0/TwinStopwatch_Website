@@ -61,27 +61,27 @@ class MyClock {
       this.red_watch_start_time = Number(data.startTime);
       this.blue_watch_start_time = Number(data.startTime);
       console.log(data);
-      this.flag = data.switch.length % 2 == 1 ? "red_start" : "blue_start";
+      this.flag = data.switchTime.length % 2 == 1 ? "red_start" : "blue_start";
 
-      for (var i = 0; i < data.switch.length; i++) {
+      for (var i = 0; i < data.switchTime.length; i++) {
         if (i == 0) {
         } else {
           if (i % 2 == 1) {
             this.blue_watch_start_time +=
-              Number(data.switch[i]) - Number(data.switch[i - 1]);
+              Number(data.switchTime[i]) - Number(data.switchTime[i - 1]);
           } else {
             this.red_watch_start_time +=
-              Number(data.switch[i]) - Number(data.switch[i - 1]);
+              Number(data.switchTime[i]) - Number(data.switchTime[i - 1]);
           }
         }
       }
 
-      console.log("data switch: " + (data.switch.length % 2));
+      console.log("data switchTime: " + (data.switchTime.length % 2));
 
-      if (data.switch.length % 2 == 1) {
+      if (data.switchTime.length % 2 == 1) {
         this.flag = "red_start";
         this.blue_watch_pause_time = Number(
-          data.switch[data.switch.length - 1]
+          data.switchTime[data.switchTime.length - 1]
         );
         blue_show(
           Number(this.red_watch_start_time) - Number(data.startTime),
@@ -89,7 +89,9 @@ class MyClock {
         );
       } else {
         this.flag = "blue_start";
-        this.red_watch_pause_time = Number(data.switch[data.switch.length - 1]);
+        this.red_watch_pause_time = Number(
+          data.switchTime[data.switchTime.length - 1]
+        );
         red_show(
           Number(this.blue_watch_start_time) - Number(data.startTime),
           this.template
