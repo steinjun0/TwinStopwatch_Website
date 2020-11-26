@@ -1,3 +1,5 @@
+require("console-stamp")(console, "yyyy/mm/dd HH:MM:ss");
+
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -18,5 +20,5 @@ app.use(express.static("public"));
 app.use(express.static("data"));
 
 app.listen(3000, function () {
-  console.log(`Example app listening at http://localhost:3000`);
+  console.info(`Someone get in port:3000`);
 });

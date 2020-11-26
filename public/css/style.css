@@ -42,12 +42,16 @@ body {
   display: none;
 }
 
+/* main_contents_and_tab */
+
 .main_contents_and_tab {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
+
+/* main_content */
 
 .main_content {
   display: flex;
@@ -106,6 +110,66 @@ body {
   justify-content: center;
 }
 
+/* chart */
+.chart_box {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  height: calc(50vh - 2 * var(--padding) - var(--font-medium));
+
+  justify-content: center;
+}
+
+.chart_box > div {
+  text-align: center;
+  margin: 1px;
+}
+
+.chart_box_elem {
+  width: 70%;
+  max-width: 45vw;
+}
+
+.chart_box .wrap_chart {
+  width: 100%;
+  display: flex;
+}
+
+.chart_box .wrap_chart.active {
+  width: 100%;
+  display: flex;
+}
+
+.chart_box .chart_edit_box {
+  float: left;
+  width: 0%;
+
+  transition: 0.5s;
+  overflow-x: hidden;
+}
+
+.chart_box .chart_edit_box.active {
+  float: left;
+  width: 30%;
+
+  transition: 0.5s;
+}
+
+.chart_box .chart_edit_box > div {
+  float: left;
+  white-space: nowrap;
+}
+.chart_box .chart_edit_box .duration_time_box span {
+  float: left;
+}
+
+.chart_box .chart_edit_box > button {
+  white-space: nowrap;
+  min-width: 100%;
+}
+
+/* user_tab */
+
 .user_tab {
   display: none;
 }
@@ -115,7 +179,7 @@ body {
   flex-direction: column;
   background-color: var(--grey-light-color);
   width: 400px;
-  height: 100vh;
+  height: calc(100vh - 2 * var(--padding) - var(--font-medium));
   text-align: center;
 }
 
@@ -158,8 +222,9 @@ body {
   color: var(--dark-color);
 }
 
+/*화면이 768px 보다 작을 때*/
+
 @media screen and (max-width: 768px) {
-  /*화면이 768px 보다 작을 때*/
   .nav_bar {
     display: flex;
     flex-direction: row;
@@ -176,12 +241,16 @@ body {
     display: flex;
   }
 
+  /* main_content_and_tab */
+
   .main_contents_and_tab {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
+
+  /* main_content */
 
   .main_content {
     display: flex;
@@ -240,6 +309,7 @@ body {
     justify-content: center;
   }
 
+  /* user_tab */
   .user_tab {
     display: none;
   }
