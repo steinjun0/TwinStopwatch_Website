@@ -2,6 +2,9 @@ const chart_start_time = document.querySelector(".chart_start_time");
 const chart_finish_time = document.querySelector(".chart_finish_time");
 const chart_duration_time = document.querySelector(".chart_duration_time");
 const chart_edit_box = document.querySelector(".chart_edit_box");
+const chart_edit_button = document.querySelector(".chart_edit_button");
+const chart_add_button = document.querySelector(".chart_add_button");
+const chart_delete_button = document.querySelector(".chart_delete_button");
 
 var randomScalingFactor = function () {
   return Math.round(Math.random() * 100);
@@ -118,6 +121,16 @@ function showChart(timeline, animationFlag, myPie) {
       /* other stuff that requires slice's label and value */
       //console.log("toggled!");
       //chart_edit_box.classList.toggle("active");
+
+      chart_edit_button.onclick = function () {
+        editStartTime(clickedElementindex, "1606301470000");
+      };
+      chart_add_button.onclick = function () {
+        addTimeBlock(clickedElementindex, startTime, endTime);
+      };
+      chart_delete_button.onclick = function () {
+        deleteTimeBlock(clickedElementindex);
+      };
     }
   };
   return myPie;
@@ -142,7 +155,55 @@ function editStartTime(n, editTime) {
       clearInterval(myClock.timer);
       clearInterval(myClock.chartTimer);
       myClock.load(myClock.userId, myClock.timelineJson);
-      chart_edit_box.classList.toggle("active");
+    }
+  };
+}
+function addTimeBlock(n, startTime, endTime) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/edit", true);
+  var body = {
+    option: "addTimeBlock",
+    idx: n,
+    data: [startTime, endTime],
+  };
+  body = JSON.stringify(body);
+  xhr.send(body);
+  alert(`${body}`);
+  console.log(body);
+  console.log(xhr.readyState);
+  console.log(xhr.status);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      var response = JSON.parse(xhr.responseText);
+      if (response.type === `error`) {
+        alert(response.body);
+      } else {
+        clearInterval(myClock.timer);
+        clearInterval(myClock.chartTimer);
+        myClock.load(myClock.userId, myClock.timelineJson);
+      }
+    }
+  };
+}
+function deleteTimeBlock(n) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/edit", true);
+  var body = {
+    option: "deleteTimeBlock",
+    idx: n,
+    data: undefined,
+  };
+  body = JSON.stringify(body);
+  xhr.send(body);
+  alert(`${body}`);
+  console.log(body);
+  console.log(xhr.readyState);
+  console.log(xhr.status);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      clearInterval(myClock.timer);
+      clearInterval(myClock.chartTimer);
+      myClock.load(myClock.userId, myClock.timelineJson);
     }
   };
 }

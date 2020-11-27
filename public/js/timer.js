@@ -39,7 +39,7 @@ class MyClock {
 
     // 콜백을 통해 data(json)를 가져옴
     promise.then((data) => {
-      console.log("get all json data");
+      console.log("{MyClcok.load} get all json data");
       console.log(data);
 
       var loadDate = new Date();
@@ -76,7 +76,9 @@ class MyClock {
         }
       }
 
-      console.log("data switchTime: " + (data.switchTime.length % 2));
+      console.log(
+        "{MyClcok.load} data switchTime: " + (data.switchTime.length % 2)
+      );
 
       if (data.switchTime.length % 2 == 1) {
         this.flag = "red_start";

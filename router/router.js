@@ -447,15 +447,25 @@ module.exports = function (app) {
             timeData = JSON.stringify(timeData);
             res.send(timeData);
           } else if (changes.option === "editStartTime") {
-            timeline.switchTime.splice(changes.idx, 1, changes.data);
-            if (changes.idx === 0) {
-              timeline.startTime = changes.data;
+            if (
+              changes.idx != 0 &&
+              changes.data < timeline.switchTime[changes.idx - 1]
+            ) {
+              res.send(JSON.stringift({
+                type: `error`,
+                body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`
+              }));
+            } else {
+              timeline.switchTime.splice(changes.idx, 1, changes.data);
+              if (changes.idx === 0) {
+                timeline.startTime = changes.data;
+              }
+              console.log(
+                `{routingButton/edit} [${userId}] get in "editStartTiem"}`
+              );
+              res.status(204).send();
             }
-            console.log(
-              `{routingButton/edit} [${userId}] get in "editStartTiem"}`
-            );
-            res.status(204).send();
-          } else if (changes.option === "addNewTime") {
+          } else if (changes.option === "addTImeBlock") {
             timeline.switchTime.splice(
               changes.idx,
               2,
@@ -463,13 +473,13 @@ module.exports = function (app) {
               changes.data[1]
             );
             console.log(
-              `{routingButton/edit} [${userId}] get in "addNewTime"}`
+              `{routingButton/edit} [${userId}] get in "addTImeBlock"}`
             );
             res.status(204).send();
-          } else if (changes.option === "deleteTime") {
+          } else if (changes.option === "deleteTimeBlock") {
             timeline.switchTime.splice(changes.idx, 2);
             console.log(
-              `{routingButton/edit} [${userId}] get in "deleteTime"}`
+              `{routingButton/edit} [${userId}] get in "deleteTimeBlock"}`
             );
             res.status(204).send();
           }
