@@ -1,6 +1,14 @@
 const chart_start_time = document.querySelector(".chart_start_time");
 const chart_finish_time = document.querySelector(".chart_finish_time");
 const chart_duration_time = document.querySelector(".chart_duration_time");
+
+const chart_start_time_input = document.querySelector(
+  ".chart_start_time_input"
+);
+const chart_finish_time_input = document.querySelector(
+  ".chart_finish_time_input"
+);
+
 const chart_edit_box = document.querySelector(".chart_edit_box");
 const chart_edit_button = document.querySelector(".chart_edit_button");
 const chart_add_button = document.querySelector(".chart_add_button");
@@ -83,6 +91,7 @@ function getAnimationConfig(switchGapArray) {
 }
 
 function showChart(timeline, animationFlag, myPie) {
+  
   var switchGapArray = getSwitchGapArray(timeline);
   if (animationFlag > 0) {
     var config = getAnimationConfig(switchGapArray);
@@ -102,6 +111,7 @@ function showChart(timeline, animationFlag, myPie) {
   var ctx = document.getElementById("chart").getContext("2d");
   myPie = new Chart(ctx, config);
 
+
   document.getElementById("chart").onclick = function (evt) {
     var activePoints = myPie.getElementsAtEvent(evt);
 
@@ -116,6 +126,7 @@ function showChart(timeline, animationFlag, myPie) {
       // var value = chart.data.datasets[0].data[clickedElementindex];
 
       //editStartTime(clickedElementindex, "1606301470000");
+
       showChartEditText(clickedElementindex);
 
       /* other stuff that requires slice's label and value */
@@ -123,7 +134,7 @@ function showChart(timeline, animationFlag, myPie) {
       //chart_edit_box.classList.toggle("active");
 
       chart_edit_button.onclick = function () {
-        editStartTime(clickedElementindex, "1606301470000");
+        editTime(clickedElementindex, "1606301470000");
       };
       chart_add_button.onclick = function () {
         addTimeBlock(clickedElementindex, startTime, endTime);
@@ -136,13 +147,13 @@ function showChart(timeline, animationFlag, myPie) {
   return myPie;
 }
 
-function editStartTime(n, editTime) {
+function editTime(n, startTime, endTime) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "/edit", true);
   var body = {
-    option: "editStartTime",
+    option: "editTime",
     idx: n,
-    data: editTime,
+    data: [startTime, endTime],
   };
   body = JSON.stringify(body);
   xhr.send(body);
@@ -158,6 +169,7 @@ function editStartTime(n, editTime) {
     }
   };
 }
+
 function addTimeBlock(n, startTime, endTime) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "/edit", true);
@@ -185,6 +197,7 @@ function addTimeBlock(n, startTime, endTime) {
     }
   };
 }
+
 function deleteTimeBlock(n) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "/edit", true);
@@ -237,15 +250,34 @@ function showChartEditText(n) {
       )}일 ${convertOneDigitToTwoDigits(
         startTime.getHours()
       )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
-      chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
-        finishTime.getDate()
-      )}일 ${convertOneDigitToTwoDigits(
-        finishTime.getHours()
-      )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
-      chart_duration_time.innerHTML = `소요 시간: ${
-        Number(timeData.finishTime) - Number(timeData.startTime)
-      }`;
-      chart_edit_box.classList.toggle("active");
+      if (timeData.finishTime === undefined) {
+        chart_finish_time.innerHTML = `종료 시간: 진행 중입니다`;
+        chart_finish_time_input.style.display = "none";
+      } else {
+        chart_finish_time_input.style.display = "";
+        chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
+          finishTime.getDate()
+        )}일 ${convertOneDigitToTwoDigits(
+          finishTime.getHours()
+        )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
+      }
+      // 소요시간 계산
+      if (timeData.finishTime === undefined) {
+        var duration = parseInt(
+          (Number(new Date().getTime()) - Number(timeData.startTime)) / 1000
+        );
+      } else {
+        var duration = parseInt(
+          (Number(timeData.finishTime) - Number(timeData.startTime)) / 1000
+        );
+      }
+      chart_duration_time.innerHTML = `소요 시간: ${parseInt(
+        duration / (60 * 60)
+      )}:${parseInt((duration / 60) % 60)}:${parseInt(duration % 60)}`;
+      if (myClock.showingEditTimeBox === 0) {
+        chart_edit_box.classList.toggle("active");
+        myClock.showingEditTimeBox = 1;
+      }
     }
   };
 }

@@ -129,30 +129,40 @@
               <canvas id="chart" style="display: flex;"></canvas>
             </div>
           </div>
-          <div class="chart_edit_box" id="app">
-              <div class="start_time_box">
+          <ul class="chart_edit_box" id="app">
+              <li class="start_time_box">
                 <span class="chart_start_time">시작시간: 00:00:00 </span>
-                <input v-model="message" placeholder="변경할 시간" size="10"> 
-              </div>
-              <div class="finish_time_box">
+                 
+              </li>
+              <li class="finish_time_box">
                 <span class="chart_finish_time">종료시간: 11:11:11 </span>
-                <input v-model="message" placeholder="변경할 시간" size="10"> 
-              </div>
-              <div class="duration_time_box">
+                
+              </li>
+              <li class="duration_time_box">
                 <span class="chart_duration_time">소요시간: zz:zz:zz </span>
-              </div>
+              </li>
               <button class="chart_edit_button" type="button">
                 수정
               </button>
+              <li class="edit_time_box">
+                <input class="chart_start_time_input"placeholder="변경할 시간" size="10">
+                <input class="chart_finish_time_input" placeholder="변경할 시간" size="10"> 
+              </li>
               <button class="chart_add_button" type="button">
                 추가
               </button>
+              <div class="add_time_box">
+
+              </div>
               <button class="chart_delete_button" type="button">
                 삭제
               </button>
+              <div class="delete_time_box">
+
+              </div>
               <div class="blank"></div>
 
-          </div>
+          </ul>
         </div>
         
       </div>

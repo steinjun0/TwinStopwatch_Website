@@ -25,6 +25,7 @@ class MyClock {
     this.userId;
     this.chartTimer;
     this.timelineJson;
+    this.showingEditTimeBox = 0;
     window.myPie;
   }
 

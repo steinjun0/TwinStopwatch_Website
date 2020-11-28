@@ -446,32 +446,39 @@ module.exports = function (app) {
             };
             timeData = JSON.stringify(timeData);
             res.send(timeData);
-          } else if (changes.option === "editStartTime") {
+          } else if (changes.option === "editTime") {
             if (
               changes.idx != 0 &&
               changes.data < timeline.switchTime[changes.idx - 1]
             ) {
-              res.send(JSON.stringift({
-                type: `error`,
-                body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`
-              }));
+              res.send(
+                JSON.stringift({
+                  type: `error`,
+                  body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`,
+                })
+              );
             } else {
-              timeline.switchTime.splice(changes.idx, 1, changes.data);
+              timeline.switchTime.splice(
+                changes.idx,
+                2,
+                changes.data[0],
+                changes.data[1]
+              );
               if (changes.idx === 0) {
-                timeline.startTime = changes.data;
+                timeline.startTime = changes.data[0];
               }
               console.log(
                 `{routingButton/edit} [${userId}] get in "editStartTiem"}`
               );
               res.status(204).send();
             }
-          } else if (changes.option === "addTImeBlock") {
-            timeline.switchTime.splice(
-              changes.idx,
-              2,
-              changes.data[0],
-              changes.data[1]
-            );
+          } else if (changes.option === "addTimeBlock") {
+            timeline.switchTime.push(changes.data[0], changes.data[1]);
+            timeline.switchTime.sort(function (a, b) {
+              // 오름차순
+              return a - b;
+              // 1, 2, 3, 4, 10, 11
+            });
             console.log(
               `{routingButton/edit} [${userId}] get in "addTImeBlock"}`
             );
