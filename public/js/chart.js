@@ -10,9 +10,24 @@ const chart_finish_time_input = document.querySelector(
 );
 
 const chart_edit_box = document.querySelector(".chart_edit_box");
+const finish_time_box = document.querySelector(".finish_time_box");
+const duration_time_box = document.querySelector(".duration_time_box");
+
 const chart_edit_button = document.querySelector(".chart_edit_button");
 const chart_add_button = document.querySelector(".chart_add_button");
 const chart_delete_button = document.querySelector(".chart_delete_button");
+
+const edit_time_box = document.querySelector(".edit_time_box");
+const add_time_box = document.querySelector(".add_time_box");
+const edit_confirm_button = document.querySelector(".edit_confirm_button");
+const add_confirm_button = document.querySelector(".add_confirm_button");
+
+const edit_start_time_input = document.querySelector(".edit_start_time_input");
+const edit_finish_time_input = document.querySelector(
+  ".edit_finish_time_input"
+);
+const add_start_time_input = document.querySelector(".add_start_time_input");
+const add_finish_time_input = document.querySelector(".add_finish_time_input");
 
 var randomScalingFactor = function () {
   return Math.round(Math.random() * 100);
@@ -91,7 +106,6 @@ function getAnimationConfig(switchGapArray) {
 }
 
 function showChart(timeline, animationFlag, myPie) {
-  
   var switchGapArray = getSwitchGapArray(timeline);
   if (animationFlag > 0) {
     var config = getAnimationConfig(switchGapArray);
@@ -110,7 +124,6 @@ function showChart(timeline, animationFlag, myPie) {
 
   var ctx = document.getElementById("chart").getContext("2d");
   myPie = new Chart(ctx, config);
-
 
   document.getElementById("chart").onclick = function (evt) {
     var activePoints = myPie.getElementsAtEvent(evt);
@@ -134,9 +147,21 @@ function showChart(timeline, animationFlag, myPie) {
       //chart_edit_box.classList.toggle("active");
 
       chart_edit_button.onclick = function () {
-        editTime(clickedElementindex, "1606301470000");
+        edit_time_box.classList.toggle("active");
       };
       chart_add_button.onclick = function () {
+        add_time_box.classList.toggle("active");
+        console.log(`${edit_start_time_input.value}`);
+      };
+
+      edit_confirm_button.onclick = function () {
+        editTime(
+          clickedElementindex,
+          `${edit_start_time_input.value}`,
+          `${edit_finish_time_input.value}`
+        );
+      };
+      add_confirm_button.onclick = function () {
         addTimeBlock(clickedElementindex, startTime, endTime);
       };
       chart_delete_button.onclick = function () {
@@ -154,6 +179,7 @@ function editTime(n, startTime, endTime) {
     option: "editTime",
     idx: n,
     data: [startTime, endTime],
+    yesterday: [0, 0],
   };
   body = JSON.stringify(body);
   xhr.send(body);
@@ -252,9 +278,7 @@ function showChartEditText(n) {
       )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
       if (timeData.finishTime === undefined) {
         chart_finish_time.innerHTML = `종료 시간: 진행 중입니다`;
-        chart_finish_time_input.style.display = "none";
       } else {
-        chart_finish_time_input.style.display = "";
         chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
           finishTime.getDate()
         )}일 ${convertOneDigitToTwoDigits(
@@ -271,13 +295,27 @@ function showChartEditText(n) {
           (Number(timeData.finishTime) - Number(timeData.startTime)) / 1000
         );
       }
-      chart_duration_time.innerHTML = `소요 시간: ${parseInt(
-        duration / (60 * 60)
-      )}:${parseInt((duration / 60) % 60)}:${parseInt(duration % 60)}`;
+      chart_duration_time.innerHTML = `소요 시간: ${convertOneDigitToTwoDigits(
+        parseInt(duration / (60 * 60))
+      )}:${convertOneDigitToTwoDigits(
+        parseInt((duration / 60) % 60)
+      )}:${convertOneDigitToTwoDigits(parseInt(duration % 60))}`;
       if (myClock.showingEditTimeBox === 0) {
         chart_edit_box.classList.toggle("active");
         myClock.showingEditTimeBox = 1;
       }
     }
+  };
+}
+
+function animateDownBox() {
+  chart_edit_button.onclick = function () {
+    chart_edit_box.classList.toggle("active");
+  };
+  chart_add_button.onclick = function () {
+    finish_time_box.classList.toggle("active");
+  };
+  chart_delete_button.onclick = function () {
+    duration_time_box.classList.toggle("active");
   };
 }

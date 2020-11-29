@@ -146,6 +146,7 @@ body {
 
   transition: 0.5s;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .chart_box .chart_edit_box.active {
@@ -166,6 +167,48 @@ body {
 .chart_box .chart_edit_box > button {
   white-space: nowrap;
   min-width: 100%;
+}
+
+.chart_box .chart_edit_box .edit_time_box {
+  float: left;
+  height: 0%;
+  width: 100%;
+
+  transition: 0.5s;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.chart_box .chart_edit_box .edit_time_box.active {
+  float: left;
+  height: 30%;
+  transition: 0.5s;
+}
+
+.chart_box .chart_edit_box .edit_time_box > div {
+  float: left;
+  width: 100%;
+}
+
+.chart_box .chart_edit_box .add_time_box {
+  float: left;
+  height: 0%;
+  width: 100%;
+
+  transition: 0.5s;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.chart_box .chart_edit_box .add_time_box.active {
+  float: left;
+  height: 30%;
+  transition: 0.5s;
+}
+
+.chart_box .chart_edit_box .add_time_box > div {
+  float: left;
+  width: 100%;
 }
 
 /* user_tab */

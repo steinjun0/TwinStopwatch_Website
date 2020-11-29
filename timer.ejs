@@ -129,40 +129,53 @@
               <canvas id="chart" style="display: flex;"></canvas>
             </div>
           </div>
-          <ul class="chart_edit_box" id="app">
-              <li class="start_time_box">
+          <div class="chart_edit_box" id="app">
+              <div class="start_time_box">
                 <span class="chart_start_time">시작시간: 00:00:00 </span>
-                 
-              </li>
-              <li class="finish_time_box">
+              </div>
+              <div class="finish_time_box">
                 <span class="chart_finish_time">종료시간: 11:11:11 </span>
                 
-              </li>
-              <li class="duration_time_box">
+              </div>
+              <div class="duration_time_box">
                 <span class="chart_duration_time">소요시간: zz:zz:zz </span>
-              </li>
+              </div>
               <button class="chart_edit_button" type="button">
                 수정
               </button>
-              <li class="edit_time_box">
-                <input class="chart_start_time_input"placeholder="변경할 시간" size="10">
-                <input class="chart_finish_time_input" placeholder="변경할 시간" size="10"> 
-              </li>
+              <div class="edit_time_box">
+                <ul>
+                  <span style="float:left">시작 시간:</span>
+                  <input type="time" class="edit_start_time_input" style="width:65%">
+                </ul>
+                <div>
+                  <span style="float: left">종료 시간:</span>
+                  <input type="time" class="edit_finish_time_input" style="width:65%">
+                </div>
+                <button class="edit_confirm_button" style="float:right">확인</button>
+              </div>
               <button class="chart_add_button" type="button">
                 추가
               </button>
               <div class="add_time_box">
-
+                <ul>
+                  <span style="float:left">시작 시간:</span>
+                  <input class="add_start_time_input"placeholder="변경할 시간" style="width:65%">
+                </ul>
+                <div>
+                  <span style="float: left">종료 시간:</span>
+                  <input class="add_finish_time_input" placeholder="변경할 시간" style="width:65%">
+                </div>
+                <button class="add_confirm_button" style="float:right">확인</button>
               </div>
               <button class="chart_delete_button" type="button">
                 삭제
               </button>
               <div class="delete_time_box">
-
               </div>
               <div class="blank"></div>
 
-          </ul>
+          </div>
         </div>
         
       </div>

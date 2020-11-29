@@ -10,6 +10,21 @@ var userId = "";
 
 const dataFolder = "./data";
 
+function convertTimeToDate(standardMilli, time, yesterday) {
+  var hour = Number(time[0] + time[1]);
+  var minute = Number(time[3] + time[4]);
+  var standardDate = new Date();
+  standardDate.setTime(standardMilli);
+  standardDate.setHours(hour);
+  standardDate.setMinutes(minute);
+  if (yesterday == 1) {
+    standardDate.setTime(
+      Number(standardDate.getTime()) - Number(1000 * 60 * 60 * 24)
+    );
+  }
+  return standardDate;
+}
+
 function getFormatDate(date) {
   var year = date.getFullYear();
   var month = 1 + date.getMonth();
@@ -430,6 +445,7 @@ module.exports = function (app) {
     });
     req.on("end", function () {
       changes = JSON.parse(changes);
+
       new Promise((checkContinueResolve, reject) => {
         // 진행중이던 타이머가 있는지 확인해본다
         checkContinue(`data/${userId}`, checkContinueResolve);
@@ -447,6 +463,16 @@ module.exports = function (app) {
             timeData = JSON.stringify(timeData);
             res.send(timeData);
           } else if (changes.option === "editTime") {
+            changes.data[0] = convertTimeToDate(
+              timeline.switchTime[Number(changes.idx)],
+              changes.data[0],
+              changes.yesterday[0]
+            ).getTime();
+            changes.data[1] = convertTimeToDate(
+              timeline.switchTime[Number(changes.idx)],
+              changes.data[1],
+              changes.yesterday[1]
+            ).getTime();
             if (
               changes.idx != 0 &&
               changes.data < timeline.switchTime[changes.idx - 1]

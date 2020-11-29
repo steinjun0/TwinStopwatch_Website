@@ -265,10 +265,14 @@ finish_button.addEventListener("click", () => {
   console.log("click finish!");
   xhr.open("POST", "/button", true);
   xhr.send(`finish`);
+  if (myClock.showingEditTimeBox === 0) {
+    chart_edit_box.classList.toggle("active");
+    myClock.showingEditTimeBox = 1;
+  }
 });
 
 function red_show(red_elapsed_seconds, template) {
-  this.red_hour = parseInt((red_elapsed_seconds / (1000 * 3600)) % 24);
+  this.red_hour = parseInt(red_elapsed_seconds / (1000 * 3600));
   this.red_minute = parseInt((red_elapsed_seconds / (1000 * 60)) % 60);
   this.red_second = parseInt((red_elapsed_seconds / 1000) % 60);
 
@@ -292,7 +296,7 @@ function red_show(red_elapsed_seconds, template) {
 }
 
 function blue_show(blue_elapsed_seconds, template) {
-  this.blue_hour = parseInt((blue_elapsed_seconds / (1000 * 3600)) % 24);
+  this.blue_hour = parseInt(blue_elapsed_seconds / (1000 * 3600));
   this.blue_minute = parseInt((blue_elapsed_seconds / (1000 * 60)) % 60);
   this.blue_second = parseInt((blue_elapsed_seconds / 1000) % 60);
 
