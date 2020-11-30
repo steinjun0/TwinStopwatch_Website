@@ -65,7 +65,8 @@ body {
   width: 100%;
   height: 50vh;
   justify-content: space-between;
-  padding: 10vh 0;
+  padding-top: 10vh;
+  padding-bottom: 3vh;
 }
 
 .timer .study_time_display {
@@ -116,7 +117,7 @@ body {
   flex-direction: row;
   padding: 5px;
   height: calc(50vh - 2 * var(--padding) - var(--font-medium));
-
+  align-items: center;
   justify-content: center;
 }
 
@@ -163,6 +164,7 @@ body {
 .chart_box .chart_edit_box > div {
   float: left;
   white-space: nowrap;
+  overflow-x: hidden;
 }
 .chart_box .chart_edit_box .duration_time_box span {
   float: left;
@@ -178,8 +180,8 @@ body {
   height: 0%;
   width: 100%;
 
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 
   transition: 0.5s;
   overflow-x: hidden;
@@ -190,8 +192,8 @@ body {
   float: left;
   height: 30%;
   transition: 0.5s;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 
 .chart_box .chart_edit_box .edit_time_box > div {

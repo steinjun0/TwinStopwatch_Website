@@ -49,6 +49,20 @@ function getSwitchGapArray(timeline) {
   return switchGapArray;
 }
 
+var COLORS = function () {
+  var short_COLORS = [
+    window.chartColors.red,
+    window.chartColors.orange,
+    window.chartColors.yellow,
+    window.chartColors.green,
+    window.chartColors.blue,
+  ];
+  var long_COLORS = [];
+  for (var i = 0; i < 100; i++)
+    long_COLORS.push(short_COLORS[i % short_COLORS.length]);
+  return long_COLORS;
+};
+
 function getConfig(switchGapArray) {
   var config = {
     type: "pie",
@@ -56,17 +70,11 @@ function getConfig(switchGapArray) {
       datasets: [
         {
           data: switchGapArray,
-          backgroundColor: [
-            window.chartColors.red,
-            window.chartColors.orange,
-            window.chartColors.yellow,
-            window.chartColors.green,
-            window.chartColors.blue,
-          ],
+          backgroundColor: COLORS,
           label: "Dataset 1",
         },
       ],
-      labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
+      //labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
     },
     options: {
       responsive: true,
@@ -85,17 +93,11 @@ function getAnimationConfig(switchGapArray) {
       datasets: [
         {
           data: switchGapArray,
-          backgroundColor: [
-            window.chartColors.red,
-            window.chartColors.orange,
-            window.chartColors.yellow,
-            window.chartColors.green,
-            window.chartColors.blue,
-          ],
+          backgroundColor: COLORS,
           label: "Dataset 1",
         },
       ],
-      labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
+      //labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
     },
     options: {
       responsive: true,
@@ -172,6 +174,85 @@ function showChart(timeline, animationFlag, myPie) {
   return myPie;
 }
 
+function convertOneDigitToTwoDigits(number) {
+  if (number < 10) {
+    return "0" + number;
+  }
+  return number;
+}
+
+function showChartEditText(n) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/edit", true);
+  var body = {
+    option: "showChartEditText",
+    idx: n,
+  };
+  body = JSON.stringify(body);
+  xhr.send(body);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      var timeData = JSON.parse(xhr.responseText);
+      var startTime = new Date();
+      startTime.setTime(timeData.startTime);
+      var finishTime = new Date();
+      finishTime.setTime(timeData.finishTime);
+      chart_start_time.innerHTML = `시작 시간: ${convertOneDigitToTwoDigits(
+        startTime.getMonth()
+      )}/${convertOneDigitToTwoDigits(
+        startTime.getDate()
+      )} ${convertOneDigitToTwoDigits(
+        startTime.getHours()
+      )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
+      console.log(`${startTime.getHours()}:${startTime.getMinutes()}`);
+      edit_start_time_input.value = `${convertOneDigitToTwoDigits(
+        startTime.getHours()
+      )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
+      add_start_time_input.value = `${convertOneDigitToTwoDigits(
+        startTime.getHours()
+      )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
+
+      if (timeData.finishTime === undefined) {
+        chart_finish_time.innerHTML = `종료 시간: 진행 중입니다`;
+      } else {
+        chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
+          finishTime.getMonth()
+        )}/${convertOneDigitToTwoDigits(
+          finishTime.getDate()
+        )} ${convertOneDigitToTwoDigits(
+          finishTime.getHours()
+        )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
+        edit_finish_time_input.value = `${convertOneDigitToTwoDigits(
+          finishTime.getHours()
+        )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
+        add_finish_time_input.value = `${convertOneDigitToTwoDigits(
+          finishTime.getHours()
+        )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
+      }
+      // 소요시간 계산
+      if (timeData.finishTime === undefined) {
+        var duration = parseInt(
+          (Number(new Date().getTime()) - Number(timeData.startTime)) / 1000
+        );
+      } else {
+        var duration = parseInt(
+          (Number(timeData.finishTime) - Number(timeData.startTime)) / 1000
+        );
+      }
+      chart_duration_time.innerHTML = `소요 시간: ${convertOneDigitToTwoDigits(
+        parseInt(duration / (60 * 60))
+      )}:${convertOneDigitToTwoDigits(
+        parseInt((duration / 60) % 60)
+      )}:${convertOneDigitToTwoDigits(parseInt(duration % 60))}`;
+      if (myClock.showingEditTimeBox === 0) {
+        chart_edit_box.classList.toggle("active");
+        myClock.showingEditTimeBox = 1;
+      }
+    }
+  };
+}
+
 function editTime(n, startTime, endTime) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "/edit", true);
@@ -246,67 +327,6 @@ function deleteTimeBlock(n) {
       clearInterval(myClock.chartTimer);
       //window.myPie.destroy();
       myClock.load(myClock.userId, myClock.timelineJson);
-    }
-  };
-}
-
-function convertOneDigitToTwoDigits(number) {
-  if (number < 10) {
-    return "0" + number;
-  }
-  return number;
-}
-
-function showChartEditText(n) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/edit", true);
-  var body = {
-    option: "showChartEditText",
-    idx: n,
-  };
-  body = JSON.stringify(body);
-  xhr.send(body);
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-      var timeData = JSON.parse(xhr.responseText);
-      var startTime = new Date();
-      startTime.setTime(timeData.startTime);
-      var finishTime = new Date();
-      finishTime.setTime(timeData.finishTime);
-      chart_start_time.innerHTML = `시작 시간: ${convertOneDigitToTwoDigits(
-        startTime.getDate()
-      )}일 ${convertOneDigitToTwoDigits(
-        startTime.getHours()
-      )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
-      if (timeData.finishTime === undefined) {
-        chart_finish_time.innerHTML = `종료 시간: 진행 중입니다`;
-      } else {
-        chart_finish_time.innerHTML = `종료 시간: ${convertOneDigitToTwoDigits(
-          finishTime.getDate()
-        )}일 ${convertOneDigitToTwoDigits(
-          finishTime.getHours()
-        )}:${convertOneDigitToTwoDigits(finishTime.getMinutes())}`;
-      }
-      // 소요시간 계산
-      if (timeData.finishTime === undefined) {
-        var duration = parseInt(
-          (Number(new Date().getTime()) - Number(timeData.startTime)) / 1000
-        );
-      } else {
-        var duration = parseInt(
-          (Number(timeData.finishTime) - Number(timeData.startTime)) / 1000
-        );
-      }
-      chart_duration_time.innerHTML = `소요 시간: ${convertOneDigitToTwoDigits(
-        parseInt(duration / (60 * 60))
-      )}:${convertOneDigitToTwoDigits(
-        parseInt((duration / 60) % 60)
-      )}:${convertOneDigitToTwoDigits(parseInt(duration % 60))}`;
-      if (myClock.showingEditTimeBox === 0) {
-        chart_edit_box.classList.toggle("active");
-        myClock.showingEditTimeBox = 1;
-      }
     }
   };
 }
