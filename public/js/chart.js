@@ -191,6 +191,7 @@ function editTime(n, startTime, endTime) {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       clearInterval(myClock.timer);
       clearInterval(myClock.chartTimer);
+      //window.myPie.destroy();
       myClock.load(myClock.userId, myClock.timelineJson);
     }
   };
@@ -218,6 +219,7 @@ function addTimeBlock(n, startTime, endTime) {
       } else {
         clearInterval(myClock.timer);
         clearInterval(myClock.chartTimer);
+        //window.myPie.destroy();
         myClock.load(myClock.userId, myClock.timelineJson);
       }
     }
@@ -242,6 +244,7 @@ function deleteTimeBlock(n) {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       clearInterval(myClock.timer);
       clearInterval(myClock.chartTimer);
+      //window.myPie.destroy();
       myClock.load(myClock.userId, myClock.timelineJson);
     }
   };

@@ -478,7 +478,7 @@ module.exports = function (app) {
               changes.data < timeline.switchTime[changes.idx - 1]
             ) {
               res.send(
-                JSON.stringift({
+                JSON.stringify({
                   type: `error`,
                   body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`,
                 })
@@ -510,7 +510,22 @@ module.exports = function (app) {
             );
             res.status(204).send();
           } else if (changes.option === "deleteTimeBlock") {
-            timeline.switchTime.splice(changes.idx, 2);
+            if (changes.idx == 0) {
+              if (timeline.switchTime.length == 1) {
+                res.send(
+                  JSON.stringify({
+                    type: `error`,
+                    body: `타임블럭이 하나밖에 없습니다.`,
+                  })
+                );
+                return;
+              } else {
+                timeline.switchTime.splice(changes.idx, 1);
+                timeline.startTime = timeline.switchTime[0];
+              }
+            } else {
+              timeline.switchTime.splice(changes.idx, 2);
+            }
             console.log(
               `{routingButton/edit} [${userId}] get in "deleteTimeBlock"}`
             );
@@ -532,7 +547,7 @@ module.exports = function (app) {
     });
   });
 };
-
+/*
 function checkContinuetest(dataFolder, userData, outerResolve) {
   const promise = new Promise(function (resolve, reject) {
     var reg = /[0-9999]/;
@@ -583,7 +598,7 @@ function checkContinuetest(dataFolder, userData, outerResolve) {
     console.log(`{checkContinue} print in then ` + continuousAndJson);
     outerResolve(continuousAndJson);
   });
-}
+}*/
 
 function editStartTime(n, editTime) {
   new Promise((checkContinueResolve, reject) => {

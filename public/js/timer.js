@@ -78,7 +78,7 @@ class MyClock {
       }
 
       console.log(
-        "{MyClcok.load} data switchTime: " + (data.switchTime.length % 2)
+        "{MyClcok.load} data switchTime: " + (data.switchTime.length % 2) // red인지 blue인지 판별
       );
 
       if (data.switchTime.length % 2 == 1) {
@@ -108,7 +108,7 @@ class MyClock {
       var switchGapArray = getSwitchGapArray(data);
       var config = getAnimationConfig(switchGapArray);
       var ctx = document.getElementById("chart").getContext("2d");
-      window.myPie = new Chart(ctx, config);
+      //window.myPie = new Chart(ctx, config);
 
       var animationFlag = 0;
       this.chartTimer = setInterval(() => {
@@ -186,11 +186,16 @@ class MyClock {
       var ctx = document.getElementById("chart").getContext("2d");
 
       console.log(window.myPie);
-      window.myPie.destroy();
+
       this.flag = "finish";
       document.getElementById("finish_button").innerHTML = "reset";
       console.log("stop!");
     } else if (this.flag == "finish") {
+      window.myPie.destroy();
+      if (myClock.showingEditTimeBox === 1) {
+        chart_edit_box.classList.toggle("active");
+        myClock.showingEditTimeBox = 0;
+      }
       document.getElementById("study_time").innerHTML = "00:00:00";
       document.getElementById("rest_time").innerHTML = "00:00:00";
       document.getElementById("finish_button").innerHTML = "finish";
@@ -265,10 +270,6 @@ finish_button.addEventListener("click", () => {
   console.log("click finish!");
   xhr.open("POST", "/button", true);
   xhr.send(`finish`);
-  if (myClock.showingEditTimeBox === 0) {
-    chart_edit_box.classList.toggle("active");
-    myClock.showingEditTimeBox = 1;
-  }
 });
 
 function red_show(red_elapsed_seconds, template) {
