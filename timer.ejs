@@ -131,25 +131,57 @@
           </div>
           <div class="chart_edit_box" id="app">
               <div class="start_time_box">
-                <span class="chart_start_time">시작시간: 00:00:00 </span>
-                <input v-model="message" placeholder="변경할 시간" size="10"> 
+                <span class="chart_start_time" style="float: left">시작시간: 00:00:00 </span>
               </div>
               <div class="finish_time_box">
-                <span class="chart_finish_time">종료시간: 11:11:11 </span>
-                <input v-model="message" placeholder="변경할 시간" size="10"> 
+                <span class="chart_finish_time" style="float: left">종료시간: 11:11:11 </span>
               </div>
               <div class="duration_time_box">
-                <span class="chart_duration_time">소요시간: zz:zz:zz </span>
+                <span class="chart_duration_time" style="float: left">소요시간: zz:zz:zz </span>
               </div>
-              <button @click="handle_toggle" type="button">
-                확인
+              <button class="chart_edit_button" type="button">
+                수정
               </button>
-              <button @click="handle_toggle" type="button">
+              <div class="edit_time_box">
+                <div>
+                  <span style="float:left">시작 시간:</span>
+                  <input type="time" class="edit_start_time_input">
+                  <input type="checkbox" class="edit_start_time_yesterday">
+                </div>
+                <div>
+                  <span style="float: left">종료 시간:</span>
+                  <input type="time" class="edit_finish_time_input">
+                  <input type="checkbox" class="edit_finish_time_yesterday">
+                </div>
+                <div style="overflow-x: hidden,overflow-y: hidden">
+                  <span style="float: left; font-size: 0.8rem;">변경시간이 어제라면 체크 박스를 선택!</span>
+                  <button class="edit_confirm_button" style="float:right">확인</button>
+                </div>
+              </div>
+              <button class="chart_add_button" type="button">
                 추가
               </button>
-              <button @click="handle_toggle" type="button">
+              <div class="add_time_box">
+                <div>
+                  <span style="float:left">시작 시간:</span>
+                  <input type="time" class="add_start_time_input">
+                  <input type="checkbox" class="add_start_time_yesterday">
+                </div>
+                <div>
+                  <span style="float: left">종료 시간:</span>
+                  <input type="time" class="add_finish_time_input">
+                  <input type="checkbox" class="add_finish_time_yesterday">
+                </div>
+                <div>
+                  <span style="float: left; font-size: 0.8rem;">변경시간이 어제라면 체크 박스를 선택!</span>
+                  <button class="add_confirm_button" style="float:right">확인</button>
+                </div>
+              </div>
+              <button class="chart_delete_button" type="button">
                 삭제
               </button>
+              <div class="delete_time_box">
+              </div>
               <div class="blank"></div>
 
           </div>

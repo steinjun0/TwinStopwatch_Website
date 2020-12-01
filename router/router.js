@@ -10,6 +10,21 @@ var userId = "";
 
 const dataFolder = "./data";
 
+function convertTimeToDate(standardMilli, time, yesterday) {
+  var hour = Number(time[0] + time[1]);
+  var minute = Number(time[3] + time[4]);
+  var standardDate = new Date();
+  standardDate.setTime(standardMilli);
+  standardDate.setHours(hour);
+  standardDate.setMinutes(minute);
+  if (yesterday == 1) {
+    standardDate.setTime(
+      Number(standardDate.getTime()) - Number(1000 * 60 * 60 * 24)
+    );
+  }
+  return standardDate;
+}
+
 function getFormatDate(date) {
   var year = date.getFullYear();
   var month = 1 + date.getMonth();
@@ -430,6 +445,7 @@ module.exports = function (app) {
     });
     req.on("end", function () {
       changes = JSON.parse(changes);
+
       new Promise((checkContinueResolve, reject) => {
         // 진행중이던 타이머가 있는지 확인해본다
         checkContinue(`data/${userId}`, checkContinueResolve);
@@ -446,30 +462,72 @@ module.exports = function (app) {
             };
             timeData = JSON.stringify(timeData);
             res.send(timeData);
-          } else if (changes.option === "editStartTime") {
-            timeline.switchTime.splice(changes.idx, 1, changes.data);
-            if (changes.idx === 0) {
-              timeline.startTime = changes.data;
+          } else if (changes.option === "editTime") {
+            changes.data[0] = convertTimeToDate(
+              timeline.switchTime[Number(changes.idx)],
+              changes.data[0],
+              changes.yesterday[0]
+            ).getTime();
+            changes.data[1] = convertTimeToDate(
+              timeline.switchTime[Number(changes.idx)],
+              changes.data[1],
+              changes.yesterday[1]
+            ).getTime();
+            if (
+              changes.idx != 0 &&
+              changes.data < timeline.switchTime[changes.idx - 1]
+            ) {
+              res.send(
+                JSON.stringify({
+                  type: `error`,
+                  body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`,
+                })
+              );
+            } else {
+              timeline.switchTime.splice(
+                changes.idx,
+                2,
+                changes.data[0],
+                changes.data[1]
+              );
+              if (changes.idx === 0) {
+                timeline.startTime = changes.data[0];
+              }
+              console.log(
+                `{routingButton/edit} [${userId}] get in "editStartTiem"}`
+              );
+              res.status(204).send();
+            }
+          } else if (changes.option === "addTimeBlock") {
+            timeline.switchTime.push(changes.data[0], changes.data[1]);
+            timeline.switchTime.sort(function (a, b) {
+              // 오름차순
+              return a - b;
+              // 1, 2, 3, 4, 10, 11
+            });
+            console.log(
+              `{routingButton/edit} [${userId}] get in "addTImeBlock"}`
+            );
+            res.status(204).send();
+          } else if (changes.option === "deleteTimeBlock") {
+            if (changes.idx == 0) {
+              if (timeline.switchTime.length == 1) {
+                res.send(
+                  JSON.stringify({
+                    type: `error`,
+                    body: `타임블럭이 하나밖에 없습니다.`,
+                  })
+                );
+                return;
+              } else {
+                timeline.switchTime.splice(changes.idx, 1);
+                timeline.startTime = timeline.switchTime[0];
+              }
+            } else {
+              timeline.switchTime.splice(changes.idx, 2);
             }
             console.log(
-              `{routingButton/edit} [${userId}] get in "editStartTiem"}`
-            );
-            res.status(204).send();
-          } else if (changes.option === "addNewTime") {
-            timeline.switchTime.splice(
-              changes.idx,
-              2,
-              changes.data[0],
-              changes.data[1]
-            );
-            console.log(
-              `{routingButton/edit} [${userId}] get in "addNewTime"}`
-            );
-            res.status(204).send();
-          } else if (changes.option === "deleteTime") {
-            timeline.switchTime.splice(changes.idx, 2);
-            console.log(
-              `{routingButton/edit} [${userId}] get in "deleteTime"}`
+              `{routingButton/edit} [${userId}] get in "deleteTimeBlock"}`
             );
             res.status(204).send();
           }
@@ -489,7 +547,7 @@ module.exports = function (app) {
     });
   });
 };
-
+/*
 function checkContinuetest(dataFolder, userData, outerResolve) {
   const promise = new Promise(function (resolve, reject) {
     var reg = /[0-9999]/;
@@ -540,7 +598,7 @@ function checkContinuetest(dataFolder, userData, outerResolve) {
     console.log(`{checkContinue} print in then ` + continuousAndJson);
     outerResolve(continuousAndJson);
   });
-}
+}*/
 
 function editStartTime(n, editTime) {
   new Promise((checkContinueResolve, reject) => {

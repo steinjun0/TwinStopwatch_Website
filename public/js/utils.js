@@ -7,7 +7,15 @@ window.chartColors = {
 	green: 'rgb(75, 192, 192)',
 	blue: 'rgb(54, 162, 235)',
 	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
+	grey: 'rgb(201, 203, 207)',
+  red1:`#ffd8e7`,
+  red2:`#ff9eae`,
+  red3:`#ff6d6d`,
+  red4:`#ff4f4f`,
+  blue1:`#cef3ff`,
+  blue2:`#9de7ff`,
+  blue3:`#66bef9`,
+  blue4:`#4badff`,
 };
 
 (function(global) {

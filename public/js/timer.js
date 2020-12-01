@@ -25,6 +25,7 @@ class MyClock {
     this.userId;
     this.chartTimer;
     this.timelineJson;
+    this.showingEditTimeBox = 0;
     window.myPie;
   }
 
@@ -39,7 +40,7 @@ class MyClock {
 
     // 콜백을 통해 data(json)를 가져옴
     promise.then((data) => {
-      console.log("get all json data");
+      console.log("{MyClcok.load} get all json data");
       console.log(data);
 
       var loadDate = new Date();
@@ -76,7 +77,9 @@ class MyClock {
         }
       }
 
-      console.log("data switchTime: " + (data.switchTime.length % 2));
+      console.log(
+        "{MyClcok.load} data switchTime: " + (data.switchTime.length % 2) // red인지 blue인지 판별
+      );
 
       if (data.switchTime.length % 2 == 1) {
         this.flag = "red_start";
@@ -105,7 +108,7 @@ class MyClock {
       var switchGapArray = getSwitchGapArray(data);
       var config = getAnimationConfig(switchGapArray);
       var ctx = document.getElementById("chart").getContext("2d");
-      window.myPie = new Chart(ctx, config);
+      //window.myPie = new Chart(ctx, config);
 
       var animationFlag = 0;
       this.chartTimer = setInterval(() => {
@@ -183,11 +186,16 @@ class MyClock {
       var ctx = document.getElementById("chart").getContext("2d");
 
       console.log(window.myPie);
-      window.myPie.destroy();
+
       this.flag = "finish";
       document.getElementById("finish_button").innerHTML = "reset";
       console.log("stop!");
     } else if (this.flag == "finish") {
+      window.myPie.destroy();
+      if (myClock.showingEditTimeBox === 1) {
+        chart_edit_box.classList.toggle("active");
+        myClock.showingEditTimeBox = 0;
+      }
       document.getElementById("study_time").innerHTML = "00:00:00";
       document.getElementById("rest_time").innerHTML = "00:00:00";
       document.getElementById("finish_button").innerHTML = "finish";
@@ -265,7 +273,7 @@ finish_button.addEventListener("click", () => {
 });
 
 function red_show(red_elapsed_seconds, template) {
-  this.red_hour = parseInt((red_elapsed_seconds / (1000 * 3600)) % 24);
+  this.red_hour = parseInt(red_elapsed_seconds / (1000 * 3600));
   this.red_minute = parseInt((red_elapsed_seconds / (1000 * 60)) % 60);
   this.red_second = parseInt((red_elapsed_seconds / 1000) % 60);
 
@@ -289,7 +297,7 @@ function red_show(red_elapsed_seconds, template) {
 }
 
 function blue_show(blue_elapsed_seconds, template) {
-  this.blue_hour = parseInt((blue_elapsed_seconds / (1000 * 3600)) % 24);
+  this.blue_hour = parseInt(blue_elapsed_seconds / (1000 * 3600));
   this.blue_minute = parseInt((blue_elapsed_seconds / (1000 * 60)) % 60);
   this.blue_second = parseInt((blue_elapsed_seconds / 1000) % 60);
 
