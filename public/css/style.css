@@ -126,7 +126,7 @@ body {
   margin: 1px;
 }
 
-.chart_box_elem {
+.chart_box .chart_box_elem {
   width: 70%;
   max-width: 45vw;
 }
@@ -166,6 +166,7 @@ body {
   white-space: nowrap;
   overflow-x: hidden;
 }
+
 .chart_box .chart_edit_box .duration_time_box span {
   float: left;
 }
@@ -310,6 +311,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 150vh;
   }
 
   .timer {
@@ -371,43 +373,120 @@ body {
   .user_tab.active {
     display: none;
   }
+
+  /* chart */
+  .chart_box {
+    display: flex;
+    flex-direction: column;
+    /*padding: 5px;*/
+    /*height: calc(50vh - 2 * var(--padding) - var(--font-medium));*/
+    align-items: center;
+    justify-content: start;
+    overflow-y: scroll;
+    height: 100vh;
+  }
   /*
-  .user_tab .profile_box {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .user_tab .profile_box span {
+  .chart_box > div {
     text-align: center;
-    margin-top: 30px;
-    font-size: var(--font-large);
-  }
-
-  .user_tab .profile_img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-
-    text-align: center;
-  }
-
-  .user_tab .menu {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
-
-  .user_tab .menu li {
-    display: flex;
-    flex-direction: column;
-    margin-top: 3em;
-  }
-
-  .user_tab .menu li a {
-    font-size: var(--font-medium);
-    margin-top: 1em;
-    color: var(--dark-color);
+    margin: 1px;
   }*/
+
+  .chart_box .chart_box_elem {
+    width: 100vw;
+    height: 50vw;
+    max-width: 100vw;
+  }
+
+  .chart_box .wrap_chart {
+    width: 100%;
+    /*height: 100%;*/
+    display: flex;
+  }
+
+  .chart_box .wrap_chart.active {
+    width: 100%;
+    display: flex;
+  }
+
+  .chart_box .chart_edit_box {
+    float: left;
+    width: 0%;
+
+    transition: 0.5s;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart_box .chart_edit_box.active {
+    float: left;
+    width: 100%;
+
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart_box .chart_edit_box > div {
+    float: left;
+    white-space: nowrap;
+    overflow-x: hidden;
+  }
+
+  .chart_box .chart_edit_box .duration_time_box span {
+    float: left;
+  }
+
+  .chart_box .chart_edit_box > button {
+    white-space: nowrap;
+    min-width: 100%;
+  }
+
+  .chart_box .chart_edit_box .edit_time_box {
+    float: left;
+    height: 0%;
+    width: 100%;
+
+    /* display: flex;
+    flex-direction: column; */
+
+    transition: 0.5s;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .chart_box .chart_edit_box .edit_time_box.active {
+    float: left;
+    height: 30%;
+    transition: 0.5s;
+    /* display: flex;
+    flex-direction: column; */
+  }
+
+  .chart_box .chart_edit_box .edit_time_box > div {
+    float: left;
+    width: 100%;
+  }
+
+  .chart_box .chart_edit_box .add_time_box {
+    float: left;
+    height: 0%;
+    width: 100%;
+
+    transition: 0.5s;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .chart_box .chart_edit_box .add_time_box.active {
+    float: left;
+    height: 30%;
+    transition: 0.5s;
+  }
+
+  .chart_box .chart_edit_box .add_time_box > div {
+    float: left;
+    width: 100%;
+  }
 }
