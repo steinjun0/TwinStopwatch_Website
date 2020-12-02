@@ -105,8 +105,10 @@ module.exports = function (app) {
     console.log(timeFolder);
     console.log(!fs.existsSync(timeFolder));
     // start 버튼을 눌렀을 때
-    if (queryData.state === "start"&&
-      !fs.existsSync(`${timeFolder}/timeline.json`)) {
+    if (
+      queryData.state === "start" &&
+      !fs.existsSync(`${timeFolder}/timeline.json`)
+    ) {
       var startData = {
         startTime: `${now.getTime()}`,
         switch: [`${now.getTime()}`],
