@@ -535,7 +535,7 @@ module.exports = function (app) {
                 timeline.startTime = changes.data[0];
               }
               console.log(
-                `{routingButton/edit} [${userId}] get in "editStartTiem"}`
+                `{routingButton/edit} [${userId}] get in "editStartTime"}`
               );
               res.status(204).send();
             }
