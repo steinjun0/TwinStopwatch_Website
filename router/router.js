@@ -10,10 +10,17 @@ var userId = "";
 
 const dataFolder = "./data";
 
+var moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
+
+
 function convertTimeToDate(standardMilli, standardDate, time, yesterday) {
-  var hour = Number(time[0] + time[1]);
+  var hour = Number(time[0] + time[1])-Number(9);
   var minute = Number(time[3] + time[4]);
-  //var standardDate = new Date();
+  var date = moment().format('YYYY-MM-DD HH:mm:ss');
+  standardDate = new Date();
+  console.log(standardDate);
   standardDate.setTime(standardMilli);
   standardDate.setHours(hour);
   standardDate.setMinutes(minute);
