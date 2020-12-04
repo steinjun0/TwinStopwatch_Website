@@ -26,6 +26,7 @@ class MyClock {
     this.chartTimer;
     this.timelineJson;
     this.showingEditTimeBox = 0;
+    this.presentChartIndex = -1;
     window.myPie;
   }
 

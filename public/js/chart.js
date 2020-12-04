@@ -190,7 +190,6 @@ function showChartEditText(n) {
   };
   body = JSON.stringify(body);
   xhr.send(body);
-
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       var timeData = JSON.parse(xhr.responseText);
@@ -248,7 +247,19 @@ function showChartEditText(n) {
       if (myClock.showingEditTimeBox === 0) {
         chart_edit_box.classList.toggle("active");
         myClock.showingEditTimeBox = 1;
+      } else {
+        console.log(
+          `{showChartEditText}myClock.presentChartIndex: ${myClock.presentChartIndex}`
+        );
+        console.log(`{showChartEditText}n: ${n}`);
+        if (myClock.presentChartIndex === n) {
+          chart_edit_box.classList.toggle("active");
+          myClock.presentChartIndex = -1;
+          myClock.showingEditTimeBox = 0;
+          return;
+        }
       }
+      myClock.presentChartIndex = n;
     }
   };
 }
