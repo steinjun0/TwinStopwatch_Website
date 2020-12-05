@@ -489,6 +489,7 @@ module.exports = function (app) {
     req.on("end", function () {
       changes = JSON.parse(changes);
       changes.standardDate = new Date(changes.standardTime);
+      console.log(`look here!!!!!1`);
       console.log(changes);
       new Promise((checkContinueResolve, reject) => {
         // 진행중이던 타이머가 있는지 확인해본다
@@ -519,11 +520,17 @@ module.exports = function (app) {
               changes.data[1],
               changes.yesterday[1]
             ).getTime();
-
+            console.log(`changes.data[0]: ${changes.data[0]}`);
+            console.log(
+              `timeline.switchTime[changes.idx - 1]: ${
+                timeline.switchTime[changes.idx - 1]
+              }`
+            );
             if (
               changes.idx != 0 &&
               changes.data[0] < timeline.switchTime[changes.idx - 1]
             ) {
+              console.log(`입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`);
               res.send(
                 JSON.stringify({
                   type: `error`,
@@ -533,6 +540,7 @@ module.exports = function (app) {
             } else if (
               Number(changes.data[1]) < Number(changes.standardDate.toString())
             ) {
+              console.log(`입력시간이 현재 시간보다 더 빠릅니다.`);
               res.send(
                 JSON.stringify({
                   type: `error`,
@@ -547,6 +555,7 @@ module.exports = function (app) {
                 timeline.switchTime[Number(changes.idx) + Number(3)] <
                 changes.data[1]
               ) {
+                console.log(`입력시간이 뒤의 종료 시간보다 더 빠릅니다.`);
                 res.send(
                   JSON.stringify({
                     type: `error`,
@@ -555,6 +564,9 @@ module.exports = function (app) {
                 );
               }
             } else if (changes.idx == timeline.switchTime.length - 2) {
+              console.log(
+                "맨 끝의 친구를 변경하시는 군요. 시작시간만 바뀝니다"
+              );
               timeline.switchTime.splice(changes.idx, 1, changes.data[0]);
               if (changes.idx === 0) {
                 timeline.startTime = changes.data[0];
@@ -564,6 +576,13 @@ module.exports = function (app) {
               );
               res.status(204).send();
             } else {
+              console.log(`정상적인 입력입니다.`);
+              console.log(`changes.data[0]: ${changes.data[0]}`);
+              console.log(
+                `timeline.switchTime[changes.idx - 1]: ${
+                  timeline.switchTime[changes.idx - 1]
+                }`
+              );
               timeline.switchTime.splice(
                 changes.idx,
                 2,

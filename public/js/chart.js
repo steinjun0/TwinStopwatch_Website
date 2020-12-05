@@ -264,29 +264,40 @@ function showChartEditText(n) {
 }
 
 function editTime(n, startTime, endTime) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/edit", true);
-  var body = {
-    option: "editTime",
-    idx: n,
-    data: [startTime, endTime],
-    yesterday: [0, 0],
-    standardDate: new Date().toString(),
-  };
-  body = JSON.stringify(body);
-  xhr.send(body);
-  alert(`${body}`);
-  //console.log(body);
-  //console.log(xhr.readyState);
-  //console.log(xhr.status);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-      clearInterval(myClock.timer);
-      clearInterval(myClock.chartTimer);
-      //window.myPie.destroy();
-      myClock.load(myClock.userId, myClock.timelineJson);
-    }
-  };
+  if (startTime > endTime) {
+    alert(`시작시간이 종료시간보다 빠릅니다!`);
+  } else {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/edit", true);
+    var body = {
+      option: "editTime",
+      idx: n,
+      data: [startTime, endTime],
+      yesterday: [0, 0],
+      standardDate: new Date().toString(),
+    };
+    body = JSON.stringify(body);
+    xhr.send(body);
+    alert(`${body}`);
+    //console.log(body);
+    //console.log(xhr.readyState);
+    //console.log(xhr.status);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+        if (response.type === `error`) {
+          console.log(`i'm in error`);
+          alert(response.body);
+        } else {
+          clearInterval(myClock.timer);
+          clearInterval(myClock.chartTimer);
+          //window.myPie.destroy();
+          myClock.load(myClock.userId, myClock.timelineJson);
+        }
+      }
+    };
+  }
 }
 
 function addTimeBlock(n, startTime, endTime) {
@@ -304,7 +315,7 @@ function addTimeBlock(n, startTime, endTime) {
   //console.log(xhr.readyState);
   //console.log(xhr.status);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
+    if (xhr.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
       var response = JSON.parse(xhr.responseText);
       if (response.type === `error`) {
         alert(response.body);
