@@ -543,7 +543,7 @@ module.exports = function (app) {
                 })
               );
             } else if (
-              Number(changes.data[1]) >  Number(new Date().getTime()-9*1000*60*60)
+              Number(changes.data[1]) >  Number(new Date().getTime())//-9*1000*60*60)
             ) {
               console.log(`입력시간이 현재 시간보다 더 빠릅니다.`);
               res.send(

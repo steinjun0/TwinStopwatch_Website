@@ -295,11 +295,18 @@ function editTime(n, startTime, endTime) {
           console.log(`i'm in error`);
           alert(response.body);
         } else {
+		  console.log(`reset all timer`);
           clearInterval(myClock.timer);
           clearInterval(myClock.chartTimer);
           //window.myPie.destroy();
           myClock.load(myClock.userId, myClock.timelineJson);
         }
+	  } else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 204) {
+		  console.log(`reset all timer`);
+          clearInterval(myClock.timer);
+          clearInterval(myClock.chartTimer);
+          //window.myPie.destroy();
+          myClock.load(myClock.userId, myClock.timelineJson);
       }
     };
   }
