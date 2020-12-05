@@ -491,6 +491,8 @@ module.exports = function (app) {
       changes.standardDate = new Date(changes.standardTime);
       console.log(`look here!!!!!1`);
       console.log(changes);
+	  //console.log(`changes.data ${Number(changes.data[1])}`);
+	  console.log(`new Date().getTime() - 9hour ${ Number(new Date().getTime()-9*1000*60*60)}`);
       new Promise((checkContinueResolve, reject) => {
         // 진행중이던 타이머가 있는지 확인해본다
         checkContinue(`data/${userId}`, checkContinueResolve);
@@ -526,6 +528,9 @@ module.exports = function (app) {
                 timeline.switchTime[changes.idx - 1]
               }`
             );
+			
+	        console.log(`changes.data ${Number(changes.data[1])}`);
+            console.log(`new Date().getTime() - 9hour ${ Number(new Date().getTime()-9*1000*60*60)}`);
             if (
               changes.idx != 0 &&
               changes.data[0] < timeline.switchTime[changes.idx - 1]
@@ -538,7 +543,7 @@ module.exports = function (app) {
                 })
               );
             } else if (
-              Number(changes.data[1]) < Number(changes.standardDate.toString())
+              Number(changes.data[1]) >  Number(new Date().getTime()-9*1000*60*60)
             ) {
               console.log(`입력시간이 현재 시간보다 더 빠릅니다.`);
               res.send(
@@ -563,7 +568,7 @@ module.exports = function (app) {
                   })
                 );
               }
-            } else if (changes.idx == timeline.switchTime.length - 2) {
+            } else if (changes.idx == timeline.switchTime.length - 1) {
               console.log(
                 "맨 끝의 친구를 변경하시는 군요. 시작시간만 바뀝니다"
               );

@@ -264,9 +264,14 @@ function showChartEditText(n) {
 }
 
 function editTime(n, startTime, endTime) {
+  var now = new Date();
+  console.log(`now.toString:${now.getTime()}`);
+  console.log(`Number(now.toString()):${Number(now.getTime())}`);
+  console.log(`endTime:${endTime}`);
   if (startTime > endTime) {
     alert(`시작시간이 종료시간보다 빠릅니다!`);
-  } else {
+  }
+  else {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/edit", true);
     var body = {
