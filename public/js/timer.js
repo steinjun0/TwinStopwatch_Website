@@ -1,14 +1,14 @@
 function getTimeline(timelineJson) {
   const promise = new Promise((resolve, reject) => {
     var file = `${timelineJson.replace("./data", "")}`;
-    console.log(`getTimeline file: ${file}`);
+    //console.log(`getTimeline file: ${file}`);
     var rawFile = new XMLHttpRequest();
     rawFile.overrideMimeType("application/json");
     rawFile.open("GET", file, true);
     rawFile.onreadystatechange = function () {
       if (rawFile.readyState === 4 && rawFile.status == "200") {
         var data = JSON.parse(rawFile.responseText);
-        console.log(data);
+        //console.log(data);
         resolve(data); // 콜백함수 호출
       }
     };
@@ -204,7 +204,7 @@ class MyClock {
   }
 
   showWatch() {
-    console.log("showWatch!");
+    //console.log("showWatch!");
     if (this.flag == "red_start") {
       this.now = new Date();
       this.pause_duration = this.now.getTime() - this.blue_watch_pause_time;
@@ -319,7 +319,7 @@ function blue_show(blue_elapsed_seconds, template) {
 
   // 출력
   //this.lcd_blue.display(text)
-  console.log("blue" + blue_output);
+  //console.log("blue" + blue_output);
 
   document.getElementById("rest_time").innerHTML = blue_output;
 }

@@ -35,17 +35,17 @@ var randomScalingFactor = function () {
 
 function getSwitchGapArray(timeline) {
   var switchArray = timeline.switchTime;
-  console.log(`3: ${timeline.switchTime}`);
+  //console.log(`3: ${timeline.switchTime}`);
   var switchGapArray = [];
   var now = new Date().getTime();
   switchArray.push(now);
-  console.log(`6: ${switchArray}`);
+  //console.log(`6: ${switchArray}`);
   switchArray = switchArray.map((x) => x - timeline.switchTime[0]);
-  console.log(`7: ${switchArray}`);
+  //console.log(`7: ${switchArray}`);
   for (var i = 0; i < switchArray.length - 1; i++) {
     switchGapArray.push(switchArray[i + 1] - switchArray[i]);
   }
-  console.log(switchGapArray);
+  //console.log(switchGapArray);
   return switchGapArray;
 }
 
@@ -114,14 +114,13 @@ function showChart(timeline, animationFlag, myPie) {
   } else {
     var config = getConfig(switchGapArray);
   }
-  console.log(`show chart`);
+  //console.log(`show chart`);
   try {
     myPie.data.datasets[0].data[myPie.data.datasets[0].data.length - 1] =
       switchGapArray[switchGapArray.length - 1];
-    console.log(`5: ${timeline.switchTime}`);
     myPie.destroy();
   } catch (error) {
-    console.log(`{showChart}: there is no pie chart yet`);
+    //console.log(`{showChart}: there is no pie chart yet`);
   }
 
   var ctx = document.getElementById("chart").getContext("2d");
@@ -153,7 +152,7 @@ function showChart(timeline, animationFlag, myPie) {
       };
       chart_add_button.onclick = function () {
         add_time_box.classList.toggle("active");
-        console.log(`${edit_start_time_input.value}`);
+        //console.log(`${edit_start_time_input.value}`);
       };
 
       edit_confirm_button.onclick = function () {
@@ -204,7 +203,7 @@ function showChartEditText(n) {
       )} ${convertOneDigitToTwoDigits(
         startTime.getHours()
       )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
-      console.log(`${startTime.getHours()}:${startTime.getMinutes()}`);
+      //console.log(`${startTime.getHours()}:${startTime.getMinutes()}`);
       edit_start_time_input.value = `${convertOneDigitToTwoDigits(
         startTime.getHours()
       )}:${convertOneDigitToTwoDigits(startTime.getMinutes())}`;
@@ -248,10 +247,10 @@ function showChartEditText(n) {
         chart_edit_box.classList.toggle("active");
         myClock.showingEditTimeBox = 1;
       } else {
-        console.log(
-          `{showChartEditText}myClock.presentChartIndex: ${myClock.presentChartIndex}`
-        );
-        console.log(`{showChartEditText}n: ${n}`);
+        //console.log(
+        //  `{showChartEditText}myClock.presentChartIndex: ${myClock.presentChartIndex}`
+        //);
+        //console.log(`{showChartEditText}n: ${n}`);
         if (myClock.presentChartIndex === n) {
           chart_edit_box.classList.toggle("active");
           myClock.presentChartIndex = -1;
@@ -277,9 +276,9 @@ function editTime(n, startTime, endTime) {
   body = JSON.stringify(body);
   xhr.send(body);
   alert(`${body}`);
-  console.log(body);
-  console.log(xhr.readyState);
-  console.log(xhr.status);
+  //console.log(body);
+  //console.log(xhr.readyState);
+  //console.log(xhr.status);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       clearInterval(myClock.timer);
@@ -301,9 +300,9 @@ function addTimeBlock(n, startTime, endTime) {
   body = JSON.stringify(body);
   xhr.send(body);
   alert(`${body}`);
-  console.log(body);
-  console.log(xhr.readyState);
-  console.log(xhr.status);
+  //console.log(body);
+  //console.log(xhr.readyState);
+  //console.log(xhr.status);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       var response = JSON.parse(xhr.responseText);
@@ -330,9 +329,9 @@ function deleteTimeBlock(n) {
   body = JSON.stringify(body);
   xhr.send(body);
   alert(`${body}`);
-  console.log(body);
-  console.log(xhr.readyState);
-  console.log(xhr.status);
+  //console.log(body);
+  //console.log(xhr.readyState);
+  //console.log(xhr.status);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
       clearInterval(myClock.timer);

@@ -19,7 +19,7 @@ function convertTimeToDate(standardMilli, standardDate, time, yesterday) {
   var minute = Number(time[3] + time[4]);
   var date = moment().format("YYYY-MM-DD HH:mm:ss");
   standardDate = new Date();
-  console.log(standardDate);
+  //console.log(standardDate);
   standardDate.setTime(standardMilli);
   standardDate.setHours(hour);
   standardDate.setMinutes(minute);
@@ -522,7 +522,7 @@ module.exports = function (app) {
 
             if (
               changes.idx != 0 &&
-              changes.data < timeline.switchTime[changes.idx - 1]
+              changes.data[0] < timeline.switchTime[changes.idx - 1]
             ) {
               res.send(
                 JSON.stringify({
@@ -530,6 +530,39 @@ module.exports = function (app) {
                   body: `입력시간이 앞선 일정 시작시간보다 더 빠릅니다.`,
                 })
               );
+            } else if (
+              Number(changes.data[1]) < Number(changes.standardDate.toString())
+            ) {
+              res.send(
+                JSON.stringify({
+                  type: `error`,
+                  body: `입력시간이 현재 시간보다 더 빠릅니다.`,
+                })
+              );
+            } else if (
+              timeline.switchTime.length >
+              Number(changes.idx) + Number(3)
+            ) {
+              if (
+                timeline.switchTime[Number(changes.idx) + Number(3)] <
+                changes.data[1]
+              ) {
+                res.send(
+                  JSON.stringify({
+                    type: `error`,
+                    body: `입력시간이 뒤의 종료 시간보다 더 빠릅니다.`,
+                  })
+                );
+              }
+            } else if (changes.idx == timeline.switchTime.length - 2) {
+              timeline.switchTime.splice(changes.idx, 1, changes.data[0]);
+              if (changes.idx === 0) {
+                timeline.startTime = changes.data[0];
+              }
+              console.log(
+                `{routingButton/edit} [${userId}] get in "editStartTime"}`
+              );
+              res.status(204).send();
             } else {
               timeline.switchTime.splice(
                 changes.idx,
