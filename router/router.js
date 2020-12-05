@@ -10,15 +10,14 @@ var userId = "";
 
 const dataFolder = "./data";
 
-var moment = require('moment');
-require('moment-timezone');
+var moment = require("moment");
+require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
 
-
 function convertTimeToDate(standardMilli, standardDate, time, yesterday) {
-  var hour = Number(time[0] + time[1])-Number(9);
+  var hour = Number(time[0] + time[1]) - Number(9);
   var minute = Number(time[3] + time[4]);
-  var date = moment().format('YYYY-MM-DD HH:mm:ss');
+  var date = moment().format("YYYY-MM-DD HH:mm:ss");
   standardDate = new Date();
   console.log(standardDate);
   standardDate.setTime(standardMilli);
@@ -237,7 +236,7 @@ function getTimeString() {
 
 // isFinished send True/False to Resolve
 function isFinished(dataFolder, outerResolve) {
-  //var files = glob.readdirSync(`${timeFolder}/*[0-9].json`, {});
+  //var files = glob.readdirSync(`${timeFolder}\*[0-9].json`, {});
 
   var isFinishedPromise = new Promise((resolve, reject) => {
     glob.readdir(`${dataFolder}/*[0-9].json`, function (error, filelist) {
