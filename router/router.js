@@ -132,7 +132,7 @@ function routingButton(userFolder, state, res) {
     console.log(`{routingButton} ${userId} press the start button`);
     new Promise((checkContinueResolve, reject) => {
       // 진행중이던 타이머가 있는지 확인해본다
-      checkContinue(`${userFolder}`, checkContinueResolve);
+      checkContinue(`data/${userId}`, checkContinueResolve);
     }).then((continuousAndJson) => {
       if (!continuousAndJson.continuous) {
         // 진행중이던 타이머가 없다면 새로 만든다
@@ -180,7 +180,7 @@ function routingButton(userFolder, state, res) {
   } else if (state === "switch") {
     new Promise((checkContinueResolve, reject) => {
       // 진행중이던 타이머가 있는지 확인해본다
-      checkContinue(`${userFolder}`, checkContinueResolve);
+      checkContinue(`data/${userId}`, checkContinueResolve);
     }).then((continuousAndJson) => {
       if (continuousAndJson.continuous) {
         var timeline = JSON.parse(
@@ -204,7 +204,7 @@ function routingButton(userFolder, state, res) {
   else if (state === "finish") {
     new Promise((checkContinueResolve, reject) => {
       // 진행중이던 타이머가 있는지 확인해본다
-      checkContinue(`${userFolder}`, checkContinueResolve);
+      checkContinue(`data/${userId}`, checkContinueResolve);
     }).then((continuousAndJson) => {
       if (continuousAndJson.continuous) {
         var timeline = JSON.parse(
@@ -239,7 +239,7 @@ function isFinished(dataFolder, outerResolve) {
   //var files = glob.readdirSync(`${timeFolder}\*[0-9].json`, {});
 
   var isFinishedPromise = new Promise((resolve, reject) => {
-    glob.readdir(`${dataFolder}/*[0-9].json`, function (error, filelist) {
+    glob.readdir(`${dataFolder}/${userId}/*[0-9].json`, function (error, filelist) {
       filelist = filelist
         .map(function (fileName) {
           return {
@@ -707,7 +707,7 @@ function checkContinuetest(dataFolder, userData, outerResolve) {
 function editStartTime(n, editTime) {
   new Promise((checkContinueResolve, reject) => {
     // 진행중이던 타이머가 있는지 확인해본다
-    checkContinue(`${userFolder}`, checkContinueResolve);
+    checkContinue(`data/${userId}`, checkContinueResolve);
   }).then((continuousAndJson) => {
     if (continuousAndJson.continuous) {
       var timeline = JSON.parse(
