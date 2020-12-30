@@ -52,7 +52,8 @@ function renderAsVisit(res, visited, timelineJson) {
 }
 
 function getNextJsonName(userFolder) {
-  var filelist = glob.readdirSync(`data/${userId}/*[0-9].json`, {});
+  var filelist = [];
+  filelist = glob.readdirSync(`data/${userId}/*[0-9].json`, {});
   /*-숫자 에 match되는 문자열을 파일 리스트에서 찾기*/
   console.log(`data/${userId}`);
   console.log(filelist);
@@ -88,7 +89,7 @@ function getNextJsonName(userFolder) {
 }
 
 function getLatestJsonName(userFolder) {
-  var filelist = glob.readdirSync(`${userFolder}/*[0-9].json`, {});
+  var filelist = glob.readdirSync(`data/${userId}/*[0-9].json`, {});
   //console.log(`{getLatestJsonName} filelist: ${filelist}`);
   /*
   -숫자 에 match되는 문자열을 파일 리스트에서 찾기
@@ -239,7 +240,9 @@ function isFinished(dataFolder, outerResolve) {
   //var files = glob.readdirSync(`${timeFolder}\*[0-9].json`, {});
 
   var isFinishedPromise = new Promise((resolve, reject) => {
-    glob.readdir(`${dataFolder}/${userId}/*[0-9].json`, function (error, filelist) {
+    console.log(`data/${userId}/*[0-9].json`);
+    filelist = [];
+    glob.readdir(`data/${userId}/*[0-9].json`, function (error, filelist) {
       filelist = filelist
         .map(function (fileName) {
           return {
@@ -294,20 +297,20 @@ function checkContinue(userFolder, outerResolve) {
   const promise = new Promise(function (resolve, reject) {
     console.log(`{checkContinue} userFolder: ${userFolder}`);
 
-    var files = glob.readdirSync(`${userFolder}/*[0-9].json`, {});
+    var files = glob.readdirSync(`data/${userId}/*[0-9].json`, {});
     // timeline 파일이 하나라도 있는가?
     if (files != "") {
       //console.info(
       //  `{checkContinue} [${userData.id}] has the timeline ${files}`
       //);
 
-      fs.readdir(`${userFolder}`, function (error, filelist) {
+      fs.readdir(`data/${userId}`, function (error, filelist) {
         filelist = filelist
           .map(function (fileName) {
             return {
               name: fileName,
               time: fs
-                .statSync(`${userFolder}` + "/" + fileName)
+                .statSync(`data/${userId}` + "/" + fileName)
                 .mtime.getTime(),
             };
           })
@@ -325,7 +328,7 @@ function checkContinue(userFolder, outerResolve) {
         );
 
         var isFinishedPromise = new Promise((resolveFinish, reject) => {
-          isFinished(`${userFolder}`, resolveFinish);
+          isFinished(`data/${userId}`, resolveFinish);
         });
 
         isFinishedPromise.then((isFinished) => {
@@ -491,8 +494,12 @@ module.exports = function (app) {
       changes.standardDate = new Date(changes.standardTime);
       console.log(`look here!!!!!1`);
       console.log(changes);
-	  //console.log(`changes.data ${Number(changes.data[1])}`);
-	  console.log(`new Date().getTime() - 9hour ${ Number(new Date().getTime()-9*1000*60*60)}`);
+      //console.log(`changes.data ${Number(changes.data[1])}`);
+      console.log(
+        `new Date().getTime() - 9hour ${Number(
+          new Date().getTime() - 9 * 1000 * 60 * 60
+        )}`
+      );
       new Promise((checkContinueResolve, reject) => {
         // 진행중이던 타이머가 있는지 확인해본다
         checkContinue(`data/${userId}`, checkContinueResolve);
@@ -528,9 +535,13 @@ module.exports = function (app) {
                 timeline.switchTime[changes.idx - 1]
               }`
             );
-			
-	        console.log(`changes.data ${Number(changes.data[1])}`);
-            console.log(`new Date().getTime() - 9hour ${ Number(new Date().getTime()-9*1000*60*60)}`);
+
+            console.log(`changes.data ${Number(changes.data[1])}`);
+            console.log(
+              `new Date().getTime() - 9hour ${Number(
+                new Date().getTime() - 9 * 1000 * 60 * 60
+              )}`
+            );
             if (
               changes.idx != 0 &&
               changes.data[0] < timeline.switchTime[changes.idx - 1]
@@ -543,7 +554,7 @@ module.exports = function (app) {
                 })
               );
             } else if (
-              Number(changes.data[1]) >  Number(new Date().getTime())//-9*1000*60*60)
+              Number(changes.data[1]) > Number(new Date().getTime()) //-9*1000*60*60)
             ) {
               console.log(`입력시간이 현재 시간보다 더 빠릅니다.`);
               res.send(
