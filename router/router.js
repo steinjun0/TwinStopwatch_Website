@@ -52,12 +52,12 @@ function renderAsVisit(res, visited, timelineJson) {
 }
 
 function getNextJsonName(userFolder) {
-  var filelist = glob.readdirSync(`${userFolder}/*[0-9].json`, {});
-  /*
-  -숫자 에 match되는 문자열을 파일 리스트에서 찾기
+  var filelist = glob.readdirSync(`data/${userId}/*[0-9].json`, {});
+  /*-숫자 에 match되는 문자열을 파일 리스트에서 찾기*/
+  console.log(`data/${userId}`);
   console.log(filelist);
+  console.log(`divide`);
   console.log(filelist[filelist.length - 1].match(/-(\d*)/));
-  */
   filelist = filelist
     .map(function (fileName) {
       return {
@@ -147,7 +147,7 @@ function routingButton(userFolder, state, res) {
             finishTime: "",
           };
           startData = JSON.stringify(startData);
-          fs.writeFileSync(`${getNextJsonName(userFolder)}`, startData);
+          fs.writeFileSync(`${getNextJsonName(userId)}`, startData);
           console.info(
             `{routingButton} [${userId}]: start the timer\nmake ${getNextJsonName(
               userFolder
@@ -173,7 +173,7 @@ function routingButton(userFolder, state, res) {
           console.info(
             `{routingButton} [${userId}]: start the timer\nmake ${userFolder}/timeline-1.json`
           );
-          res.send(getLatestJsonName(`/${userId}`));
+          res.send(getLatestJsonName(`data/${userId}`));
         }
       }
     });
@@ -320,12 +320,12 @@ function checkContinue(userFolder, outerResolve) {
 
         var timeline = JSON.parse(
           fs
-            .readFileSync(`${userFolder}/${filelist[filelist.length - 1]}`)
+            .readFileSync(`data/${userId}/${filelist[filelist.length - 1]}`)
             .toString()
         );
 
         var isFinishedPromise = new Promise((resolveFinish, reject) => {
-          isFinished(userFolder, resolveFinish);
+          isFinished(`${userFolder}`, resolveFinish);
         });
 
         isFinishedPromise.then((isFinished) => {
